@@ -5,7 +5,8 @@
 <title>Orbital · BikeErg Arcade</title>
 <style>
 :root{color-scheme:dark;--bg:#080e1b;--panel:#111b2e;--line:#26334b;--ink:#edf5fc;--muted:#9cadc6;--mint:#8df0c0;--orange:#ffbf83}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,sans-serif}button,input,select{font:inherit}button,a,input,select{outline-offset:4px}a{color:var(--mint);text-decoration:none}header{flex-wrap:wrap;max-width:1480px;margin:auto;padding:25px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:800;letter-spacing:3px;font-size:13px}.brand span{color:var(--mint)}nav{flex-wrap:wrap;display:flex;gap:25px}.layout>section,.side{min-width:0}.layout{max-width:1480px;margin:auto;padding:5px 32px 32px;display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:22px}.stage{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#0a1224;aspect-ratio:1000/690}canvas{display:block;width:100%;height:100%}.over{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#080e1bbd;backdrop-filter:blur(5px);padding:30px}.over[hidden]{display:none}.card{max-width:510px;text-align:center}h1{font-size:clamp(35px,5vw,68px);margin:8px 0 15px;letter-spacing:-3px}h2{font-size:19px;margin:0 0 15px}.eyebrow{color:var(--mint);letter-spacing:3px;font-size:11px;font-weight:700;text-transform:uppercase}p{line-height:1.7;color:var(--muted)}button{border:1px solid var(--line);background:#1b2941;color:var(--ink);border-radius:10px;padding:11px 18px;cursor:pointer}button:hover{filter:brightness(1.2)}button:disabled{opacity:.4;cursor:default}.primary{background:var(--mint);color:#0a241c;font-weight:750;border-color:var(--mint)}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.side{display:flex;flex-direction:column;gap:18px}.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}.status{font-size:12px;color:var(--muted);line-height:1.5}.status.live{color:var(--mint)}.watts{font-size:52px;font-weight:750;letter-spacing:-2px;font-variant-numeric:tabular-nums}.watts small{font-size:16px;color:var(--muted);letter-spacing:0}progress{width:100%;height:7px;accent-color:var(--mint)}.label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:10px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.grid strong{font-size:23px;display:block}.grid small{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}label{display:block;font-size:12px;color:var(--muted);margin:13px 0 6px}input[type=number],select{width:100%;padding:9px;background:#0b1424;color:var(--ink);border:1px solid var(--line);border-radius:8px}input[type=range]{width:100%;accent-color:var(--mint)}.controls{font-size:12px;line-height:2.1;color:var(--muted)}kbd{background:#23324c;padding:3px 6px;border-radius:4px;color:var(--ink)}.toolbar{flex-wrap:wrap;display:flex;gap:8px;margin-top:12px}.toolbar button{flex:1;font-size:12px}.upgrade{max-width:100%;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.upgrade button{max-width:145px;line-height:1.6}.fine{font-size:11px;color:var(--muted);line-height:1.6}.demo{color:var(--orange)}@media(max-width:900px){.layout{grid-template-columns:1fr;padding:0 14px 20px}.side{display:grid;grid-template-columns:1fr 1fr}.stage{min-height:380px;aspect-ratio:1.3}header{padding:20px 16px}.controlsbox{grid-column:1/-1}}@media(max-width:540px){.side{grid-template-columns:1fr}.controlsbox{grid-column:auto}nav{gap:12px;font-size:12px}.stage{aspect-ratio:.9}.watts{font-size:38px}}
-.powerhud{position:absolute;z-index:3;top:12px;left:50%;transform:translateX(-50%);width:280px;max-width:44%;padding:9px 14px 11px;border:1px solid #36516b;border-radius:12px;background:#0b1529ed;pointer-events:none;text-align:center;box-shadow:0 5px 22px #0004}.powerhud small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.6px}.powerhud strong{display:block;font-size:24px;line-height:1.25;font-variant-numeric:tabular-nums;letter-spacing:-.5px}.powerhud progress{display:block;margin-top:5px;height:7px}.powerhud.at-target{border-color:var(--mint)}.powerhud.at-target strong{color:var(--mint)}.stage:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border-radius:0}.stage:fullscreen .powerhud{top:20px;width:320px}.stage:fullscreen .powerhud strong{font-size:30px}@media(max-width:540px){.powerhud{padding:6px 8px}.powerhud strong{font-size:17px}.powerhud small{font-size:8px;letter-spacing:.8px}}
+.powerhud{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;position:absolute;z-index:3;top:12px;left:50%;transform:translateX(-50%);width:440px;max-width:58%;padding:9px 14px 11px;border:1px solid #36516b;border-radius:12px;background:#0b1529ed;pointer-events:none;text-align:center;box-shadow:0 5px 22px #0004}.powerhud small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.6px}.powerhud strong{display:block;font-size:24px;line-height:1.25;font-variant-numeric:tabular-nums;letter-spacing:-.5px}.powerhud progress{display:block;margin-top:5px;height:7px}.powerhud.at-target{border-color:var(--mint)}.powerhud.at-target strong{color:var(--mint)}.stage:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border-radius:0}.stage:fullscreen .powerhud{top:20px;width:460px}.stage:fullscreen .powerhud strong{font-size:30px}@media(max-width:540px){.powerhud{padding:6px 8px}.powerhud strong{font-size:17px}.powerhud small{font-size:8px;letter-spacing:.8px}}
+.specialhud{border-left:1px solid #36516b;padding-left:16px}.specialhud strong{color:var(--orange)}.specialhud progress{accent-color:var(--orange)}.specialhud.ready strong{color:#ffdc8d}@media(max-width:540px){.powerhud{gap:7px;max-width:70%;width:300px}.specialhud{padding-left:7px}.powerhud strong{font-size:15px}.powerhud small{font-size:7px}}
 </style>
 </head>
 <body>
@@ -13,7 +14,7 @@
 <main class="layout">
 <section>
 <div class="stage"><canvas id="scene" width="1000" height="690" aria-label="Orbital spelplan. Styr vänster/höger med piltangenterna, trampa för att skjuta och använd mellanslag för specialattack."></canvas>
-<div class="powerhud" id="powerhud"><small id="hudlabel">REAKTOREFFEKT / MÅL</small><strong id="hudwatts">— / 100 W</strong><progress id="hudpower" max="100" value="0" aria-label="Effekt mot mål-watt"></progress></div>
+<div class="powerhud" id="powerhud"><div><small id="hudlabel">REAKTOREFFEKT / MÅL</small><strong id="hudwatts">— / 100 W</strong><progress id="hudpower" max="100" value="0" aria-label="Effekt mot mål-watt"></progress></div><div class="specialhud"><small>SPECIALATTACK · SPACE</small><strong id="hudenergytext">0%</strong><progress id="hudenergy" max="100" value="0" aria-label="Specialattackens laddning"></progress></div></div>
 <div class="over" id="overlay"><div class="card"><div class="eyebrow" id="overtag">Trampa. Sikta. Försvara.</div><h1 id="overtitle">Orbital</h1><p id="overtext">Din cykel är skeppets energikälla. Styr med pilarna — ju mer du trampar, desto tätare skjuter du.</p><div id="choices" class="upgrade"></div><div class="actions" id="menuactions"><button class="primary" id="start">Starta uppdrag</button><button id="demo">Prova demo utan cykel</button></div></div></div>
 </div>
 <div class="toolbar"><button id="pause" disabled>Pausa · P</button><button id="special" disabled>Specialattack · Space</button><button id="fullscreen">Helskärm ↗</button><button id="menu">Spelmeny</button></div>
@@ -30,6 +31,7 @@
 const $=id=>document.getElementById(id), canvas=$('scene'), ctx=canvas.getContext('2d');
 const W=1000,H=690, keys=new Set();
 let telemetry=null,lastPollOK=false,demo=false,phase='menu',resumePhase='playing',power=0,ratio=0,lastFrame=performance.now(),shotClock=0,enemyClock=0,rest=0,mode='arcade',difficulty=1,target=100,session=0;
+let waitingForBike=false,wasFiring=false;
 let player, enemies=[],shots=[],hostile=[],particles=[],score=0,wave=1,lives=3,energy=0,fireBonus=1,shieldBonus=0,gameTime=0;
 const stars=Array.from({length:120},(_,i)=>({x:(i*397)%W,y:(i*173)%H,r:i%7===0?1.7:.8,s:8+i%22}));
 function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
@@ -45,11 +47,11 @@ function record(){const k=recordKey();records[k]=Math.max(Number(records[k])||0,
 function overlay(title,text,tag,action,label){$('overlay').hidden=false;$('overtitle').textContent=title;$('overtext').textContent=text;$('overtag').textContent=tag;$('choices').replaceChildren();$('menuactions').hidden=false;$('start').textContent=label;$('start').onclick=action;$('demo').hidden=phase!=='menu'}
 function hideOverlay(){$('overlay').hidden=true}
 function start(useDemo){
- demo=useDemo;session++;mode=$('mode').value;difficulty={easy:.7,normal:1,hard:1.4}[$('difficulty').value]||1;
+ waitingForBike=false;wasFiring=false;demo=useDemo;session++;mode=$('mode').value;difficulty={easy:.7,normal:1,hard:1.4}[$('difficulty').value]||1;
  target=Math.min(1000,Math.max(20,Number($('target').value)||100));$('target').value=target;save('bikeerg.orbital.settings',{mode,target,difficulty:$('difficulty').value});
  score=0;wave=1;lives=3;energy=0;fireBonus=1;shieldBonus=0;gameTime=0;shots=[];hostile=[];particles=[];shotClock=0;enemyClock=0;player={x:500,y:610,invulnerable:1};
  direction=1;spawnWave();phase='playing';hideOverlay();$('pause').disabled=false;$('democontrol').hidden=!demo;$('demolabel').hidden=!demo;
- if(!demo&&!fresh())pause('Väntar på PM5');
+ if(!demo&&!fresh()){pause('Väntar på PM5');waitingForBike=true;$('overtitle').textContent='Börja trampa';$('overtext').textContent='Spelet startar automatiskt när PM5 skickar livedata. Du behöver inte trycka Space.'}
 }
 function spawnWave(){enemies=[];const cols=8,rows=Math.min(4,2+Math.floor((wave-1)/3));for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)enemies.push({x:180+c*85,y:80+r*55,hp:r===0&&wave>3?2:1,type:r%3});}
 let direction=1;
@@ -58,9 +60,9 @@ function pause(reason='Pausat'){
  const message=reason==='Anslutningen bröts'?'Ingen färsk livedata från PM5. Trampandet och spelet fortsätter när du har anslutit och väljer Återuppta.':reason==='Väntar på PM5'?'Väck PM5 och välj Connect. Återuppta när livedatan kommer fram, eller välj demo från spelmenyn.':'Ta din tid. Ditt uppdrag väntar här.';
  overlay('Pausat',message,'Uppdraget är sparat i denna flik',resume,'Återuppta');
 }
-function resume(){if(!demo&&!fresh()){pauseMessage();return}phase=resumePhase;keys.clear();hideOverlay();lastFrame=performance.now()}
+function resume(){if(!demo&&!fresh()){pauseMessage();return}waitingForBike=false;phase=resumePhase;keys.clear();hideOverlay();lastFrame=performance.now()}
 function pauseMessage(){$('overtext').textContent='Väntar på färsk livedata från PM5. Väck monitorn, välj Connect och trampa lite.'}
-function showMenu(){record();phase='menu';keys.clear();$('pause').disabled=true;$('special').disabled=true;overlay('Orbital','Din cykel är skeppets energikälla. Styr med pilarna — ju mer du trampar, desto tätare skjuter du.','Trampa. Sikta. Försvara.',()=>start(false),'Starta uppdrag');$('demo').hidden=false}
+function showMenu(){waitingForBike=false;record();phase='menu';keys.clear();$('pause').disabled=true;$('special').disabled=true;overlay('Orbital','Din cykel är skeppets energikälla. Styr med pilarna — ju mer du trampar, desto tätare skjuter du.','Trampa. Sikta. Försvara.',()=>start(false),'Starta uppdrag');$('demo').hidden=false}
 $('start').onclick=()=>start(false);$('demo').onclick=()=>start(true);$('menu').onclick=showMenu;
 $('pause').onclick=()=>phase==='paused'?resume():pause();
 $('fullscreen').onclick=()=>{const promise=document.fullscreenElement?document.exitFullscreen():document.querySelector('.stage').requestFullscreen();promise?.catch(()=>{})};
@@ -74,12 +76,12 @@ function nextWave(){record();phase='upgrade';keys.clear();overlay('Sektorn säkr
  }
 }
 window.addEventListener('keydown',e=>{
- if(e.target.matches('input,select'))return;
+ if(e.target.matches('input,select')&&!(e.target.matches('input[type=range]')&&e.key===' '))return;
  if(['ArrowLeft','ArrowRight',' ','Escape','p','P'].includes(e.key))e.preventDefault();
  if(e.repeat&&[' ','Escape','p','P'].includes(e.key))return;
  keys.add(e.key);if(e.key===' ')special();if(['Escape','p','P'].includes(e.key))phase==='paused'?resume():pause();
 });
-window.addEventListener('keyup',e=>keys.delete(e.key));window.addEventListener('blur',()=>{keys.clear();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){keys.clear();pause()}});
+window.addEventListener('keyup',e=>keys.delete(e.key));window.addEventListener('blur',()=>{waitingForBike=false;keys.clear();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){waitingForBike=false;keys.clear();pause()}});
 function update(dt){
  if(!['playing','rest'].includes(phase))return;
  if(!demo&&!fresh()){pause('Anslutningen bröts');return}
@@ -88,8 +90,14 @@ function update(dt){
  player.x=Math.min(W-30,Math.max(30,player.x+((keys.has('ArrowRight')?1:0)-(keys.has('ArrowLeft')?1:0))*410*dt));
 
  const rate=fireRate();
- shotClock-=dt;if(rate&&shotClock<=0){shots.push({x:player.x,y:player.y-25});shotClock=1/rate}if(!rate)shotClock=0;
- energy=Math.min(100,energy+ratio*4.5*dt);
+ if(rate>0){
+  // Recompute the interval at current watts, so a low-power first shot
+  // cannot leave a multi-second cooldown when the rider accelerates.
+  shotClock+=dt;
+  if(!wasFiring||shotClock>=1/rate){shots.push({x:player.x,y:player.y-25});shotClock=0}
+  wasFiring=true;
+ }else{shotClock=0;wasFiring=false}
+ energy=Math.min(100,energy+ratio*12.5*dt);
  const speed=(24+Math.min(wave,20)*4)*difficulty;
  let edge=false;for(const e of enemies){e.x+=direction*speed*dt;if(e.x<35||e.x>W-35)edge=true}
  if(edge){direction*=-1;for(const e of enemies){e.y+=18;e.x=Math.max(35,Math.min(W-35,e.x))}}
@@ -123,7 +131,9 @@ if(player.invulnerable>0&&Math.floor(t*12)%2)ctx.globalAlpha=.35;ctx.fillStyle=e
 }
 function frame(t){let gap=(t-lastFrame)/1000;lastFrame=t;if(gap>2)pause();const dt=Math.min(.05,Math.max(0,gap));
  power=demo?Number($('demowatts').value):(fresh()?Math.max(0,telemetry.metrics?.power_w||0):0);ratio=Math.min(1,power/target);
+ if(waitingForBike&&phase==='paused'&&fresh()&&document.hasFocus()&&!document.hidden)resume();
  update(dt);draw(dt,t/1000);
+ $('hudenergy').value=energy;$('hudenergytext').textContent=energy>=100?'REDO':Math.floor(energy)+'%';document.querySelector('.specialhud').classList.toggle('ready',energy>=100);
  $('hudwatts').textContent=(demo||fresh()?Math.round(power):'—')+' / '+target+' W';$('hudpower').max=target;$('hudpower').value=Math.min(power,target);$('powerhud').classList.toggle('at-target',power>=target);$('hudlabel').textContent=demo?'DEMO · EFFEKT / MÅL':fresh()?'REAKTOREFFEKT / MÅL':'INGEN LIVEDATA / MÅL';
  $('connection').textContent=demo?'DEMO · simulerad effekt':fresh()?'● PM5 ansluten':'○ Väntar på PM5';$('connection').className='status'+(fresh()&&!demo?' live':'');
  $('watts').textContent=demo||fresh()?Math.round(power):'—';$('cadence').textContent=demo?'Simulerad effekt':fresh()?(telemetry.metrics?.cadence_rpm??'—')+' rpm':'Ingen livedata';$('powerbar').value=ratio;$('energy').value=energy;$('energytext').textContent=Math.floor(energy)+'%';$('firerate').textContent=power>0?fireRate().toFixed(1)+' skott/s':'Ingen eld';$('score').textContent=score;$('wave').textContent=wave;$('lives').textContent=mode==='chill'?'∞':lives;$('best').textContent=records[recordKey()]||0;$('special').disabled=phase!=='playing'||energy<100;$('special').classList.toggle('primary',energy>=100);$('special').textContent=energy>=100?'★ SPECIAL REDO · Space':'Specialattack · Space';$('pause').textContent=phase==='paused'?'Återuppta · P':'Pausa · P';

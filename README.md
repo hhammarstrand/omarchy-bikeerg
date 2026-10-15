@@ -28,6 +28,7 @@ The bar and stats panel are functional. Orbital includes Arcade, Chill and
 Interval modes, enemy waves, upgrades, a charged special attack and demo mode.
 A local dashboard records workouts and displays power and cadence charts.
 Future game concepts, including a target-watt kart racer, live in [IDEAS.md](IDEAS.md).
+Planned improvements are tracked in [TODO.md](TODO.md).
 
 ## Requirements
 
@@ -108,8 +109,11 @@ new workout there.
   75% gives 3.3, and target watts gives 10. More watts above target adds no fire rate.
 - **Space:** use the special attack when energy reaches 100%. A pulsing golden
   ring around the ship, an in-game label and a highlighted button signal readiness.
+  An in-game special-energy bar shows progress in fullscreen too. A full charge
+  takes eight seconds at target watts, or sixteen seconds at half target watts.
 - **P / Escape:** pause or resume. Switching windows or losing fresh PM5 data pauses
-  the action; resume explicitly when ready.
+  the action; resume explicitly when ready. When starting a new game before
+  the first data arrives, it waits and starts automatically once PM5 data is fresh.
 - **Arcade:** enemy waves and a limited number of shields.
 - **Chill:** no game over; enemies can be cleared at your own pace.
 - **Interval:** 20 seconds of recovery after each completed wave and upgrade choice.
