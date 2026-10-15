@@ -1,0 +1,11 @@
+[Unit]
+Description=BikeErg read-only Bluetooth bridge
+After=bluetooth.target
+
+[Service]
+ExecStart=%h/.local/share/bikeerg/venv/bin/python %h/.config/omarchy/plugins/hhammarstrand.bikeerg/bridge.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
