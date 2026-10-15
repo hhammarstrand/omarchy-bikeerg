@@ -7,6 +7,7 @@ import struct
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from history import History
 from bleak import BleakClient, BleakScanner
 from bleak.backends.device import BLEDevice
 
@@ -15,6 +16,7 @@ ROOT = Path(__file__).parent
 STATUS = Path(os.environ.get('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}')) / 'bikeerg.json'
 state = {'connected': False, 'status': 'Söker PM5', 'device': 'PM5 431575390', 'metrics': {}, 'raw': {}}
 lock = threading.Lock()
+history = None
 
 def publish(**changes):
     with lock:
@@ -93,6 +95,16 @@ async def ride():
             publish(connected=False,status=str(exc),metrics={},last_sample=0)
             await asyncio.sleep(5)
 
+async def log_workouts():
+    while True:
+        with lock:
+            snapshot = {**state, 'metrics': dict(state['metrics'])}
+        history.tick(snapshot)
+        await asyncio.sleep(1)
+
+async def main():
+    await asyncio.gather(ride(), log_workouts())
+
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.headers.get('Host') not in ('127.0.0.1:18765','localhost:18765'):
@@ -100,6 +112,16 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/api/state':
             with lock: body=json.dumps(state,ensure_ascii=False).encode()
             mime='application/json'
+        elif self.path == '/api/sessions':
+            body=json.dumps(history.list()).encode(); mime='application/json'
+        elif self.path.startswith('/api/sessions/'):
+            try: result=history.detail(int(self.path.rsplit('/',1)[1]))
+            except ValueError: result=None
+            if result is None:
+                self.send_error(404); return
+            body=json.dumps(result).encode(); mime='application/json'
+        elif self.path == '/dashboard':
+            body=(ROOT/'dashboard.html').read_bytes(); mime='text/html; charset=utf-8'
         elif self.path in ('/','/game'):
             body=(ROOT/'game.html').read_bytes(); mime='text/html; charset=utf-8'
         else:
@@ -112,6 +134,7 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
 
 if __name__ == '__main__':
+    history = History()
     server=ThreadingHTTPServer(('127.0.0.1',18765),Handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()
-    asyncio.run(ride())
+    asyncio.run(main())

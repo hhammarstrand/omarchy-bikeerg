@@ -101,10 +101,10 @@ Panel {
                 }
                 Button {
                     width: parent.width
-                    text: "Visa alla data ↗"
+                    text: "Träningslogg / dashboard ↗"
                     foreground: root.barForeground
                     focusable: true
-                    onClicked: Qt.openUrlExternally("http://127.0.0.1:18765/api/state")
+                    onClicked: { Qt.openUrlExternally("http://127.0.0.1:18765/dashboard"); root.close() }
                 }
             }
         }

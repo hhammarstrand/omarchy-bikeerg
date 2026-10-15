@@ -1,1 +1,20 @@
-{"schemaVersion":1,"id":"hhammarstrand.bikeerg","name":"BikeErg","version":"0.1.0","author":"hhammarstrand","description":"Live BikeErg watts, workout time and details with browser game launcher","kinds":["bar-widget"],"entryPoints":{"barWidget":"Widget.qml"},"barWidget":{"displayName":"BikeErg","category":"Fitness","allowMultiple":false,"defaultSection":"right"}}
+{
+  "schemaVersion": 1,
+  "id": "hhammarstrand.bikeerg",
+  "name": "BikeErg",
+  "version": "0.2.0",
+  "author": "hhammarstrand",
+  "description": "Live BikeErg watts, workout time and details with browser game launcher",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "BikeErg",
+    "category": "Fitness",
+    "allowMultiple": false,
+    "defaultSection": "center"
+  }
+}
