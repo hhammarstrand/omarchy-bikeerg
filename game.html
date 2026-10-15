@@ -2,37 +2,38 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Orbital · BikeErg Arcade</title>
+<title>BikeErg Arcade</title>
 <style>
 [hidden]{display:none!important}:root{color-scheme:dark;--bg:#080e1b;--panel:#111b2e;--line:#26334b;--ink:#edf5fc;--muted:#9cadc6;--mint:#8df0c0;--orange:#ffbf83}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,sans-serif}button,input,select{font:inherit}button,a,input,select{outline-offset:4px}a{color:var(--mint);text-decoration:none}header{flex-wrap:wrap;max-width:1480px;margin:auto;padding:25px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:800;letter-spacing:3px;font-size:13px}.brand span{color:var(--mint)}nav{flex-wrap:wrap;display:flex;gap:25px}.layout>section,.side{min-width:0}.layout{max-width:1480px;margin:auto;padding:5px 32px 32px;display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:22px}.stage{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#0a1224;aspect-ratio:1000/690}canvas{display:block;width:100%;height:100%}.over{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#080e1bbd;backdrop-filter:blur(5px);padding:30px}.over[hidden]{display:none}.card{max-width:510px;text-align:center}h1{font-size:clamp(35px,5vw,68px);margin:8px 0 15px;letter-spacing:-3px}h2{font-size:19px;margin:0 0 15px}.eyebrow{color:var(--mint);letter-spacing:3px;font-size:11px;font-weight:700;text-transform:uppercase}p{line-height:1.7;color:var(--muted)}button{border:1px solid var(--line);background:#1b2941;color:var(--ink);border-radius:10px;padding:11px 18px;cursor:pointer}button:hover{filter:brightness(1.2)}button:disabled{opacity:.4;cursor:default}.primary{background:var(--mint);color:#0a241c;font-weight:750;border-color:var(--mint)}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.side{display:flex;flex-direction:column;gap:18px}.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}.status{font-size:12px;color:var(--muted);line-height:1.5}.status.live{color:var(--mint)}.watts{font-size:52px;font-weight:750;letter-spacing:-2px;font-variant-numeric:tabular-nums}.watts small{font-size:16px;color:var(--muted);letter-spacing:0}progress{width:100%;height:7px;accent-color:var(--mint)}.label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:10px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.grid strong{font-size:23px;display:block}.grid small{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}label{display:block;font-size:12px;color:var(--muted);margin:13px 0 6px}input[type=number],select{width:100%;padding:9px;background:#0b1424;color:var(--ink);border:1px solid var(--line);border-radius:8px}input[type=range]{width:100%;accent-color:var(--mint)}.controls{font-size:12px;line-height:2.1;color:var(--muted)}kbd{background:#23324c;padding:3px 6px;border-radius:4px;color:var(--ink)}.toolbar{flex-wrap:wrap;display:flex;gap:8px;margin-top:12px}.toolbar button{flex:1;font-size:12px}.upgrade{max-width:100%;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.upgrade button{max-width:145px;line-height:1.6}.fine{font-size:11px;color:var(--muted);line-height:1.6}.demo{color:var(--orange)}@media(max-width:900px){.layout{grid-template-columns:1fr;padding:0 14px 20px}.side{display:grid;grid-template-columns:1fr 1fr}.stage{min-height:380px;aspect-ratio:1.3}header{padding:20px 16px}.controlsbox{grid-column:1/-1}}@media(max-width:540px){.side{grid-template-columns:1fr}.controlsbox{grid-column:auto}nav{gap:12px;font-size:12px}.stage{aspect-ratio:.9}.watts{font-size:38px}}
-.powerhud{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;position:absolute;z-index:3;top:12px;left:50%;transform:translateX(-50%);width:440px;max-width:58%;padding:9px 14px 11px;border:1px solid #36516b;border-radius:12px;background:#0b1529ed;pointer-events:none;text-align:center;box-shadow:0 5px 22px #0004}.powerhud small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.6px}.powerhud strong{display:block;font-size:24px;line-height:1.25;font-variant-numeric:tabular-nums;letter-spacing:-.5px}.powerhud progress{display:block;margin-top:5px;height:7px}.powerhud.at-target{border-color:var(--mint)}.powerhud.at-target strong{color:var(--mint)}.stage:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border-radius:0}.stage:fullscreen .powerhud{top:20px;width:460px}.stage:fullscreen .powerhud strong{font-size:30px}@media(max-width:540px){.powerhud{padding:6px 8px}.powerhud strong{font-size:17px}.powerhud small{font-size:8px;letter-spacing:.8px}}
+.powerhud{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;position:absolute;z-index:3;top:12px;left:50%;transform:translateX(-50%);width:440px;max-width:58%;padding:9px 14px 11px;border:1px solid #36516b;border-radius:12px;background:#0b1529ed;pointer-events:none;text-align:center;box-shadow:0 5px 22px #0004}.powerhud small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.6px}.powerhud strong{display:block;font-size:24px;line-height:1.25;font-variant-numeric:tabular-nums;letter-spacing:-.5px}.powerhud progress{display:block;margin-top:5px;height:7px}.powerhud.at-target{border-color:var(--mint)}.powerhud.at-target strong{color:var(--mint)}@media(max-width:540px){.powerhud{padding:6px 8px}.powerhud strong{font-size:17px}.powerhud small{font-size:8px;letter-spacing:.8px}}
 .specialhud{border-left:1px solid #36516b;padding-left:16px}.specialhud strong{color:var(--orange)}.specialhud progress{accent-color:var(--orange)}.specialhud.ready strong{color:#ffdc8d}@media(max-width:540px){.powerhud{gap:7px;max-width:70%;width:300px}.specialhud{padding-left:7px}.powerhud strong{font-size:15px}.powerhud small{font-size:7px}}
 .over{overflow-y:auto}.over .card{margin:auto}.menuconfig{display:grid;gap:7px;margin:18px auto;max-width:350px}.menuconfig button{font-size:13px;padding:9px 16px}.menu-selected{outline:2px solid var(--mint);outline-offset:3px;box-shadow:0 0 18px #8df0c025}.menuhint{font-size:11px;color:var(--muted)}
+.upgrade:has(.gamecard){display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.upgrade .gamecard{max-width:none;width:180px;padding:17px 12px;text-align:left;background:#142238}.gamecard strong,.gamecard small{display:block}.gamecard strong{font-size:19px}.gamecard small{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}.gameart{height:70px;display:grid;place-items:center;font-size:43px;margin-bottom:14px;border-radius:8px;background:radial-gradient(ellipse at center,#8df0c022,transparent)}.kart .gameart{color:#ffbf83;background:#493d2b}.cave .gameart{color:#86d8f0;background:#173344}.card:has(.gamecard){max-width:680px}.card:has(.gamecard) h1{font-size:48px}.brand+nav button{padding:4px 12px;font-size:12px}@media(max-width:600px){.upgrade:has(.gamecard){grid-template-columns:1fr}.upgrade .gamecard{width:100%;display:grid;grid-template-columns:52px 1fr;gap:0 12px;padding:10px}.gameart{grid-row:span 2;height:55px;margin:0;font-size:30px}.gamecard small{margin:0}.card:has(.gamecard) h1{font-size:35px}.card:has(.gamecard){width:100%}}
 </style>
 </head>
 <body>
-<header><div class="brand"><span>◈</span> BIKEERG <span>/ ARCADE</span></div><nav><a href="/dashboard">Träningslogg ↗</a><span class="status" id="connection" role="status">Söker PM5…</span></nav></header>
+<header><div class="brand"><span>◈</span> BIKEERG <span>/ ARCADE</span></div><nav><button id="arcadehome">Arkaden</button><a href="/dashboard">Träningslogg ↗</a><span class="status" id="connection" role="status">Söker PM5…</span></nav></header>
 <main class="layout">
 <section>
 <div class="stage"><canvas id="scene" width="1000" height="690" aria-label="Orbital spelplan. Styr vänster/höger med piltangenterna, trampa för att skjuta och använd mellanslag för specialattack."></canvas>
-<div class="powerhud" id="powerhud"><div><small id="hudlabel">REAKTOREFFEKT / MÅL</small><strong id="hudwatts">— / 100 W</strong><progress id="hudpower" max="100" value="0" aria-label="Effekt mot mål-watt"></progress></div><div class="specialhud"><small>SPECIALATTACK · SPACE</small><strong id="hudenergytext">0%</strong><progress id="hudenergy" max="100" value="0" aria-label="Specialattackens laddning"></progress></div></div>
+<div class="powerhud" id="powerhud"><div><small id="hudlabel">REAKTOREFFEKT / MÅL</small><strong id="hudwatts">— / 100 W</strong><progress id="hudpower" max="100" value="0" aria-label="Effekt mot mål-watt"></progress></div><div class="specialhud"><small id="hudsecondarylabel">SPECIALATTACK · SPACE</small><strong id="hudenergytext">0%</strong><progress id="hudenergy" max="100" value="0" aria-label="Specialattackens laddning"></progress></div></div>
 <div class="over" id="overlay"><div class="card"><div class="eyebrow" id="overtag">Trampa. Sikta. Försvara.</div><h1 id="overtitle">Orbital</h1><p id="overtext">Din cykel är skeppets energikälla. Styr med pilarna — ju mer du trampar, desto tätare skjuter du.</p><div id="menuconfig" class="menuconfig"><button id="menumode"></button><button id="menutarget"></button><button id="menudifficulty"></button></div><div id="choices" class="upgrade"></div><p class="menuhint">↑ ↓ Välj · ← → Ändra · Enter Bekräfta · Esc Tillbaka</p><div class="actions" id="menuactions"><button class="primary" id="start">Starta uppdrag</button><button id="demo">Prova demo utan cykel</button></div><div class="actions" style="margin-top:10px"><button id="backmenu" hidden>Till spelmenyn</button></div></div></div>
 </div>
 <div class="toolbar"><button id="pause" disabled>Pausa · P</button><button id="special" disabled>Specialattack · Space</button><button id="fullscreen">Helskärm ↗</button><button id="menu">Spelmeny</button></div>
-<p class="fine">Eldhastighet: 50% mål-watt ≈ 0,8 skott/s · 75% ≈ 3,3 · 100% = 10 (före uppgraderingar). Spelpoäng och rekord sparas i den här webbläsaren; träningsloggen sparas separat på datorn.</p>
+<p class="fine" id="gamehelp">Eldhastighet: 50% mål-watt ≈ 0,8 skott/s · 75% ≈ 3,3 · 100% = 10 (före uppgraderingar). Spelpoäng och rekord sparas i den här webbläsaren; träningsloggen sparas separat på datorn.</p>
 </section>
 <aside class="side">
-<div class="box"><div class="eyebrow">Reaktoreffekt <span id="demolabel" class="demo" hidden>· DEMO</span></div><div class="watts"><span id="watts">—</span> <small>W</small></div><progress id="powerbar" max="1" value="0"></progress><div class="label"><span id="cadence">— rpm</span><span id="firerate">Ingen eld</span></div><div class="label"><span>Specialenergi</span><span id="energytext">0%</span></div><progress id="energy" max="100" value="0"></progress><div id="democontrol" hidden><label for="demowatts">Demo-watt</label><input id="demowatts" type="range" min="0" max="250" value="90"></div></div>
-<div class="box grid"><div><small>Poäng</small><strong id="score">0</strong></div><div><small>Våg</small><strong id="wave">1</strong></div><div><small>Sköldar</small><strong id="lives">3</strong></div><div><small>Rekord</small><strong id="best">0</strong></div></div>
+<div class="box"><div class="eyebrow">Reaktoreffekt <span id="demolabel" class="demo" hidden>· DEMO</span></div><div class="watts"><span id="watts">—</span> <small>W</small></div><progress id="powerbar" max="1" value="0"></progress><div class="label"><span id="cadence">— rpm</span><span id="firerate">Ingen eld</span></div><div class="label"><span id="energytitle">Specialenergi</span><span id="energytext">0%</span></div><progress id="energy" max="100" value="0"></progress><div id="democontrol" hidden><label for="demowatts">Demo-watt</label><input id="demowatts" type="range" min="0" max="250" value="90"></div></div>
+<div class="box grid"><div><small>Poäng</small><strong id="score">0</strong></div><div><small id="stagelabel">Våg</small><strong id="wave">1</strong></div><div><small id="liveslabel">Sköldar</small><strong id="lives">3</strong></div><div><small>Rekord</small><strong id="best">0</strong></div></div>
 <div class="box"><h2>Ditt uppdrag</h2><label for="mode">Spelläge</label><select id="mode"><option value="arcade">Arcade · vågor och sköldar</option><option value="chill">Chill · utan game over</option><option value="interval">Intervall · 20 s vila mellan vågor</option></select><label for="target">Mål-watt · maximal eldhastighet</label><input id="target" type="number" min="20" max="1000" step="5" value="100"><label for="difficulty">Spelsvårighet</label><select id="difficulty"><option value="easy">Lugn</option><option value="normal" selected>Normal</option><option value="hard">Utmanande</option></select><p class="fine">Mål-watt styr hur mycket du behöver trampa. Svårigheten styr fienderna. Inställningarna används när ett nytt uppdrag startar.</p></div>
-<div class="box controlsbox"><h2>Så spelar du</h2><div class="controls"><kbd>←</kbd> <kbd>→</kbd> Flytta skeppet<br><kbd>Space</kbd> 10 s dubbelskott vid 100%<br><kbd>P</kbd> / <kbd>Esc</kbd> Pausa<br>Trampa för automatisk eld.</div><p class="fine">Spelet pausar vid avbrott eller när du lämnar fönstret. Du återupptar själv.</p></div>
+<div class="box controlsbox"><h2>Så spelar du</h2><div class="controls" id="gamecontrols"><kbd>←</kbd> <kbd>→</kbd> Flytta skeppet<br><kbd>Space</kbd> 10 s dubbelskott vid 100%<br><kbd>P</kbd> / <kbd>Esc</kbd> Pausa<br>Trampa för automatisk eld.</div><p class="fine">Spelet pausar vid avbrott eller när du lämnar fönstret. Du återupptar själv.</p></div>
 </aside></main>
 <script>
 'use strict';
 const $=id=>document.getElementById(id), canvas=$('scene'), ctx=canvas.getContext('2d');
 const W=1000,H=690, keys=new Set();
 let telemetry=null,lastPollOK=false,demo=false,phase='menu',resumePhase='playing',power=0,ratio=0,lastFrame=performance.now(),shotClock=0,enemyClock=0,rest=0,mode='arcade',difficulty=1,target=100,session=0;
-let waitingForBike=false,wasFiring=false,boostRemaining=0;
+let waitingForBike=false,wasFiring=false,boostRemaining=0,currentGame="orbital",race=null,flight=null;
 let player, enemies=[],shots=[],hostile=[],particles=[],score=0,wave=1,lives=3,energy=0,fireBonus=1,shieldBonus=0,gameTime=0;
 const stars=Array.from({length:120},(_,i)=>({x:(i*397)%W,y:(i*173)%H,r:i%7===0?1.7:.8,s:8+i%22}));
 function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
@@ -43,15 +44,15 @@ for(const key of ['target','mode','difficulty']) if(prefs[key]!==undefined) $(ke
 function fresh(){return !!(lastPollOK&&telemetry?.connected&&Date.now()/1000-(telemetry.last_sample||0)<5)}
 async function poll(){try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error();telemetry=await r.json();lastPollOK=true}catch{lastPollOK=false}setTimeout(poll,500)}poll();
 function fireRate(){return power>0?(0.2+9.8*Math.pow(ratio,4))*fireBonus:0}
-function recordKey(){return mode+':'+difficulty+(demo?':demo':'')}
+function recordKey(){return currentGame+':'+mode+':'+difficulty+(demo?':demo':'')}
 function record(){const k=recordKey();records[k]=Math.max(Number(records[k])||0,score);save('bikeerg.orbital.records',records)}
-function overlay(title,text,tag,action,label){$('overlay').hidden=false;$('overtitle').textContent=title;$('overtext').textContent=text;$('overtag').textContent=tag;$('choices').replaceChildren();$('menuactions').hidden=false;$('start').textContent=label;$('start').onclick=action;$('demo').hidden=phase!=='menu';$('menuconfig').hidden=phase!=='menu';$('backmenu').hidden=phase==='menu';refreshMenuSettings();selectMenu($('start'))}
+function overlay(title,text,tag,action,label){$('overlay').hidden=false;$('overtitle').textContent=title;$('overtext').textContent=text;$('overtag').textContent=tag;$('choices').replaceChildren();$('menuactions').hidden=false;$('start').textContent=label;$('start').onclick=action;$('demo').hidden=phase!=='menu';$('menuconfig').hidden=phase!=='menu';$('backmenu').hidden=['menu','arcade'].includes(phase);refreshMenuSettings();selectMenu($('start'))}
 function hideOverlay(){$('overlay').hidden=true;document.querySelectorAll('.menu-selected').forEach(el=>el.classList.remove('menu-selected'));if(document.activeElement?.closest('#overlay'))document.activeElement.blur();keys.clear()}
 function start(useDemo){
  boostRemaining=0;waitingForBike=false;wasFiring=false;demo=useDemo;session++;mode=$('mode').value;difficulty={easy:.7,normal:1,hard:1.4}[$('difficulty').value]||1;
  target=Math.min(1000,Math.max(20,Number($('target').value)||100));$('target').value=target;save('bikeerg.orbital.settings',{mode,target,difficulty:$('difficulty').value});
  score=0;wave=1;lives=3;energy=0;fireBonus=1;shieldBonus=0;gameTime=0;shots=[];hostile=[];particles=[];shotClock=0;enemyClock=0;player={x:500,y:610,invulnerable:1};
- direction=1;spawnWave();phase='playing';hideOverlay();$('pause').disabled=false;$('democontrol').hidden=!demo;$('demolabel').hidden=!demo;
+ direction=1;spawnWave();initExtraGame();phase='playing';hideOverlay();$('pause').disabled=false;$('democontrol').hidden=!demo;$('demolabel').hidden=!demo;
  if(!demo&&!fresh()){pause('Väntar på PM5');waitingForBike=true;$('overtitle').textContent='Börja trampa';$('overtext').textContent='Spelet startar automatiskt när PM5 skickar livedata. Du behöver inte trycka Space.'}
 }
 function spawnWave(){enemies=[];const cols=8,rows=Math.min(4,2+Math.floor((wave-1)/3));for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)enemies.push({x:180+c*85,y:80+r*55,hp:r===0&&wave>3?2:1,type:r%3});}
@@ -63,12 +64,18 @@ function pause(reason='Pausat'){
 }
 function resume(){if(!demo&&!fresh()){pauseMessage();return}waitingForBike=false;phase=resumePhase;keys.clear();hideOverlay();lastFrame=performance.now()}
 function pauseMessage(){$('overtext').textContent='Väntar på färsk livedata från PM5. Väck monitorn, välj Connect och trampa lite.'}
-function showMenu(){waitingForBike=false;record();phase='menu';keys.clear();$('pause').disabled=true;$('special').disabled=true;overlay('Orbital','Din cykel är skeppets energikälla. Styr med pilarna — ju mer du trampar, desto tätare skjuter du.','Trampa. Sikta. Försvara.',()=>start(false),'Starta uppdrag');$('demo').hidden=false}
-$('start').onclick=()=>start(false);$('demo').onclick=()=>start(true);$('menu').onclick=showMenu;$('backmenu').onclick=showMenu;
+function showMenu(){waitingForBike=false;record();phase='menu';keys.clear();$('pause').disabled=true;$('special').disabled=true;const g=GAMES[currentGame];overlay(g.title,g.description,g.tag,()=>start(false),'Starta uppdrag');$('demo').hidden=false;configureGameUI()}
+function showArcade(){waitingForBike=false;record();phase='arcade';keys.clear();$('pause').disabled=true;$('special').disabled=true;
+ overlay('Välj ditt spel','Tre sätt att spela med cykeln. Samma watt, helt olika äventyr.','BikeErg Arcade',null,'');$('menuconfig').hidden=true;$('menuactions').hidden=true;
+ for(const [id,g] of Object.entries(GAMES)){const b=document.createElement('button');b.className='gamecard '+id;b.innerHTML='<span class="gameart" aria-hidden="true">'+g.symbol+'</span><strong>'+g.title+'</strong><small>'+g.short+'</small>';b.onclick=()=>{currentGame=id;score=0;wave=1;lives=3;energy=0;boostRemaining=0;race=null;flight=null;player=null;enemies=[];showMenu()};$('choices').append(b)}
+ selectMenu(menuButtons()[0]);
+}
+
+$('start').onclick=()=>start(false);$('demo').onclick=()=>start(true);$('menu').onclick=showMenu;$('backmenu').onclick=showMenu;$('arcadehome').onclick=showArcade;
 $('pause').onclick=()=>phase==='paused'?resume():pause();
-$('fullscreen').onclick=()=>{const promise=document.fullscreenElement?document.exitFullscreen():document.querySelector('.stage').requestFullscreen();promise?.catch(()=>{})};
+$('fullscreen').onclick=()=>{const promise=document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();promise?.catch(()=>{})};
 function burst(x,y,color,n=16){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=30+Math.random()*150;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.35+Math.random()*.4,color})}}
-function special(){if(phase!=='playing'||energy<100||boostRemaining>0)return;energy=0;boostRemaining=10;shotClock=0;wasFiring=false;burst(player.x,player.y,'#ffdc8d',20)}
+function special(){if(currentGame!=='orbital')return;if(phase!=='playing'||energy<100||boostRemaining>0)return;energy=0;boostRemaining=10;shotClock=0;wasFiring=false;burst(player.x,player.y,'#ffdc8d',20)}
 $('special').onclick=special;
 function hit(){if(player.invulnerable>0)return;burst(player.x,player.y,'#ffbf83');player.invulnerable=2;if(mode==='chill')return;lives--;if(lives<=0){record();phase='over';overlay('Uppdrag avslutat',`${score} poäng · ${wave} vågor · ${Math.floor(gameTime/60)} min ${Math.floor(gameTime%60)} s. Redo för en ny runda?`,'Bra flugit',()=>start(demo),'Spela igen')}}
 function nextWave(){record();phase='upgrade';keys.clear();overlay('Sektorn säkrad',`Våg ${wave} klar. Välj en uppgradering till nästa sektor.`,'En stund att hämta andan',null,'');$('menuactions').hidden=true;
@@ -77,6 +84,102 @@ function nextWave(){record();phase='upgrade';keys.clear();overlay('Sektorn säkr
  }
  selectMenu(menuButtons()[0]);
 }
+const GAMES={
+ orbital:{title:'Orbital',symbol:'▲',tag:'Trampa. Sikta. Försvara.',short:'Rymdarkad · watt blir eldkraft',description:'Försvara sektorn med automatisk eld. Styr med vänster/höger och ladda tio sekunder dubbelskott med trampandet.'},
+ kart:{title:'Velodrift',symbol:'🏎',tag:'Hitta linjen. Håll tempot.',short:'Kartspel · mål-watt ger maxfart',description:'Kör tre varv på skogsbanan. Vänster/höger styr ratten; trampa för att accelerera. Vid mål-watt har du maxfart — högre watt ger ingen extra fart.'},
+ cave:{title:'Lumen',symbol:'◈',tag:'Hitta balansen. Följ ljuset.',short:'Grottflygning · watt ger lyftkraft',description:'Flyg genom en levande grotta och samla ljuskristaller. Trampandet ger lyftkraft: ungefär 65% av mål-watt håller höjden. Vänster/höger flyttar farkosten.'}
+};
+function configureGameUI(){
+ const kart=currentGame==='kart',cave=currentGame==='cave';
+ $('mode').options[0].text=kart?'Arcade · tre varv':cave?'Arcade · 3 km, tre sköldar':'Arcade · vågor och sköldar';
+ $('mode').options[1].text=kart?'Chill · fri körning':cave?'Chill · oändlig flygning':'Chill · utan game over';
+ $('mode').options[2].text=kart?'Intervall · vila efter varje varv':cave?'Intervall · vila var 500:e meter':'Intervall · 20 s vila mellan vågor';
+ $('difficulty').nextElementSibling.textContent=kart?'Mål-watt styr maxfarten. Svårigheten styr trafiken. Inställningarna används vid nästa start.':cave?'Mål-watt styr lyftkraften. Svårigheten styr grottans bredd. Inställningarna används vid nästa start.':'Mål-watt styr hur mycket du behöver trampa. Svårigheten styr fienderna. Inställningarna används vid nästa start.';
+ refreshMenuSettings();
+ $('stagelabel').textContent=kart?'Varv':cave?'Etapp':'Våg';$('liveslabel').textContent=kart?'km/h':'Sköldar';
+ $('hudsecondarylabel').textContent=kart?'BANA · 3 VARV':cave?'EXPEDITION · 3 KM':'SPECIALATTACK · SPACE';
+ $('energytitle').textContent=kart?'Banans framsteg':cave?'Expeditionens framsteg':'Specialenergi';
+ $('target').previousElementSibling.textContent=kart?'Mål-watt · maximal fart':cave?'Mål-watt · maximal lyftkraft':'Mål-watt · maximal eldhastighet';
+ $('gamecontrols').innerHTML=kart?'<kbd>←</kbd> <kbd>→</kbd> Styr ratten<br>Trampa för att accelerera.<br>Mål-watt = maxfart.<br>Passera checkpointarna i ordning.<br><kbd>P</kbd> / <kbd>Esc</kbd> Pausa':cave?'<kbd>←</kbd> <kbd>→</kbd> Flytta farkosten<br>Mer watt → stig. Mindre → sjunk.<br>65% mål-watt → jämn höjd.<br>Samla kristaller, undvik väggarna.<br><kbd>P</kbd> / <kbd>Esc</kbd> Pausa':'<kbd>←</kbd> <kbd>→</kbd> Flytta skeppet<br><kbd>Space</kbd> 10 s dubbelskott vid 100%<br><kbd>P</kbd> / <kbd>Esc</kbd> Pausa<br>Trampa för automatisk eld.';
+ $('gamehelp').textContent=kart?'Tre varv i Arcade. Chill ger fri körning; Intervall ger 20 s vila efter varje varv. Farten ökar mjukt upp till mål-watt. Utanför asfalten går det långsammare.':cave?'Arcade: klara 3 km med tre sköldar. Chill: oändlig flygning utan game over. Intervall: 20 s återhämtning var 500:e meter.': 'Eldhastighet: 50% mål-watt ≈ 0,8 skott/s · 75% ≈ 3,3 · 100% = 10 (före uppgraderingar).';
+ $('special').hidden=currentGame!=='orbital';canvas.setAttribute('aria-label',GAMES[currentGame].title+' spelplan. '+GAMES[currentGame].description);
+}
+function initExtraGame(){
+ configureGameUI();
+ race={x:500,y:555,heading:Math.PI,speed:0,laps:0,gate:0,coins:0,collected:new Set(),collision:0,time:0};
+ flight={x:230,y:345,vy:0,distance:0,gems:0,collected:new Set(),invulnerable:2,lastRest:0};
+}
+function finishExtra(title,text){record();phase='over';keys.clear();overlay(title,text,'Uppdraget är klart',()=>start(demo),'Spela igen')}
+const trackPoint=(angle,offset=0)=>({x:500+(340+offset)*Math.cos(angle),y:345+(210+offset)*Math.sin(angle)});
+function kartOnRoad(x,y){return Math.abs(Math.hypot((x-500)/340,(y-345)/210)-1)<.19}
+function updateKart(dt){
+ gameTime+=dt;race.time+=dt;race.collision=Math.max(0,race.collision-dt);
+ const steering=(keys.has('ArrowRight')?1:0)-(keys.has('ArrowLeft')?1:0);
+ race.heading+=steering*2.1*dt*Math.min(1,race.speed/30);
+ const road=kartOnRoad(race.x,race.y),goal=ratio*145*(road?1:.38);
+ race.speed+=(goal-race.speed)*(1-Math.exp(-2.5*dt));
+ race.x=Math.max(20,Math.min(W-20,race.x+Math.cos(race.heading)*race.speed*dt));race.y=Math.max(35,Math.min(H-25,race.y+Math.sin(race.heading)*race.speed*dt));
+ const gate=trackPoint(Math.PI+race.gate*Math.PI/2);
+ if(road&&Math.hypot(race.x-gate.x,race.y-gate.y)<72){race.gate++;if(race.gate===4){race.gate=0;race.laps++;race.collected.clear();score+=500;record();if(race.laps>=3&&mode!=='chill'){finishExtra('Målgång!',`${race.laps} varv · ${race.coins} mynt · ${Math.floor(gameTime/60)}:${String(Math.floor(gameTime%60)).padStart(2,'0')}. Starta en ny runda och hitta en ännu bättre linje.`);return}if(mode==='interval'){rest=20;phase='rest'}}}
+ for(let i=0;i<12;i++){const p=trackPoint(i*Math.PI/6,Math.sin(i*3)*18);if(!race.collected.has(i)&&Math.hypot(race.x-p.x,race.y-p.y)<29){race.collected.add(i);race.coins++;score+=100}}
+ for(let i=0;i<3;i++){const p=trackPoint(Math.PI/2+race.time*(.22+i*.018)*difficulty+i*.8,(i-1)*25);if(race.collision<=0&&Math.hypot(race.x-p.x,race.y-p.y)<27){race.speed*=.45;race.collision=1.2}}
+ wave=race.laps+1;energy=(race.laps*4+race.gate)/12*100;
+}
+function caveCenter(x){return 345+Math.sin(x/680)*95+Math.sin(x/280)*35}
+function caveGap(){return 155/Math.sqrt(difficulty)}
+function updateCave(dt){
+ gameTime+=dt;flight.invulnerable=Math.max(0,flight.invulnerable-dt);
+ flight.x=Math.max(80,Math.min(650,flight.x+((keys.has('ArrowRight')?1:0)-(keys.has('ArrowLeft')?1:0))*230*dt));
+ flight.vy+=(.65-ratio)*330*dt;flight.vy*=Math.exp(-.85*dt);flight.y+=flight.vy*dt;
+ flight.distance+=(85+ratio*65)*dt;
+ const center=caveCenter(flight.distance+flight.x),gap=caveGap();
+ if(Math.abs(flight.y-center)>gap-17){
+  if(flight.invulnerable<=0){flight.invulnerable=1.7;if(mode!=='chill')lives--;burst(flight.x,flight.y,'#ffbf83');if(lives<=0){finishExtra('Expeditionen slut',`${Math.floor(flight.distance/10)} meter · ${flight.gems} kristaller. Prova jämnare trampning eller en lugnare svårighet.`);return}}
+  flight.y=Math.max(center-gap+22,Math.min(center+gap-22,flight.y));flight.vy=0;
+ }
+ const index=Math.floor((flight.distance+flight.x)/360);
+ for(let i=Math.max(0,index-1);i<=index+1;i++){const x=i*360-flight.distance,y=caveCenter(i*360)+Math.sin(i*2)*55;if(!flight.collected.has(i)&&Math.hypot(flight.x-x,flight.y-y)<29){flight.collected.add(i);flight.gems++;score+=100}}
+ const meters=flight.distance/10;wave=Math.floor(meters/500)+1;energy=Math.min(100,meters/3000*100);
+ if(meters>=3000&&mode!=='chill'){finishExtra('Ut i ljuset!',`3 km genom grottan · ${flight.gems} kristaller · ${score} poäng. Expeditionen är klar.`);return}
+ if(mode==='interval'&&Math.floor(meters/500)>flight.lastRest){flight.lastRest=Math.floor(meters/500);rest=20;phase='rest'}
+}
+function drawKart(t){
+ ctx.fillStyle='#203f35';ctx.fillRect(0,0,W,H);
+ for(let i=0;i<90;i++){const x=(i*173)%W,y=(i*269)%H;if(kartOnRoad(x,y))continue;ctx.fillStyle=i%2?'#2a5040':'#17382f';ctx.beginPath();ctx.arc(x,y,8+i%12,0,Math.PI*2);ctx.fill()}
+ ctx.strokeStyle='#8e9e86';ctx.lineWidth=105;ctx.beginPath();ctx.ellipse(500,345,340,210,0,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle='#303e42';ctx.lineWidth=94;ctx.stroke();ctx.setLineDash([14,18]);ctx.strokeStyle='#cdd2af66';ctx.lineWidth=2;ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle='#b8d598';ctx.font='bold 26px system-ui';ctx.textAlign='center';ctx.fillText('VELODRIFT',500,325);ctx.fillStyle='#9fbfa6';ctx.font='15px system-ui';ctx.fillText('Trampa till mål-watt för maxfart',500,355);
+ for(let i=0;i<8;i++)for(let j=0;j<2;j++){ctx.fillStyle=(i+j)%2?'#f3f0cd':'#253039';ctx.fillRect(488+j*12,510+i*11,12,11)}
+ const next=trackPoint(Math.PI+race.gate*Math.PI/2);ctx.strokeStyle='#8df0c0';ctx.lineWidth=3;ctx.setLineDash([6,6]);ctx.beginPath();ctx.arc(next.x,next.y,37,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle='#b6f0c7';ctx.font='11px system-ui';ctx.fillText('NÄSTA',next.x,next.y-45);
+ for(let i=0;i<12;i++){if(race.collected.has(i))continue;const p=trackPoint(i*Math.PI/6,Math.sin(i*3)*18);ctx.fillStyle='#ffdb7d';ctx.beginPath();ctx.arc(p.x,p.y,6+Math.sin(t*3+i),0,Math.PI*2);ctx.fill()}
+ const car=(x,y,a,color)=>{ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.fillStyle='#101e25';for(const sy of [-12,8])for(const sx of [-13,6])ctx.fillRect(sx,sy,8,5);ctx.fillStyle=color;ctx.fillRect(-16,-9,32,18);ctx.fillStyle='#142b39';ctx.fillRect(-4,-6,10,12);ctx.fillStyle='#fff0b2';ctx.fillRect(12,-7,3,4);ctx.fillRect(12,3,3,4);ctx.restore()};
+ for(let i=0;i<3;i++){const a=Math.PI/2+race.time*(.22+i*.018)*difficulty+i*.8,p=trackPoint(a,(i-1)*25);car(p.x,p.y,Math.atan2(210*Math.cos(a),-340*Math.sin(a)),['#d092bf','#96bed9','#e6c878'][i])}
+ car(race.x,race.y,race.heading,race.collision>0?'#efb477':'#8df0c0');
+ ctx.fillStyle='#e3eddf';ctx.font='14px system-ui';ctx.textAlign='left';ctx.fillText(`VARV ${Math.min(3,race.laps+1)} / 3 · ${race.coins} MYNT`,25,30);
+}
+function drawCave(t){
+ ctx.fillStyle='#102b38';ctx.fillRect(0,0,W,H);
+ const gap=caveGap();
+ for(let layer=0;layer<2;layer++){ctx.fillStyle=layer?'#193f4b':'#122431';for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(0,side<0?0:H);for(let x=0;x<=W+10;x+=10){const y=caveCenter(flight.distance+x)+side*(gap+(layer?0:35))+Math.sin((x+flight.distance)/45)*7;ctx.lineTo(x,y)}ctx.lineTo(W,side<0?0:H);ctx.fill()}}
+ ctx.strokeStyle='#4e9c9c55';ctx.lineWidth=2;for(const side of [-1,1]){ctx.beginPath();for(let x=0;x<=W;x+=8){const y=caveCenter(flight.distance+x)+side*gap+Math.sin((x+flight.distance)/45)*7;if(x)ctx.lineTo(x,y);else ctx.moveTo(x,y)}ctx.stroke()}
+ const start=Math.floor(flight.distance/360);for(let i=start;i<start+5;i++){if(flight.collected.has(i))continue;const x=i*360-flight.distance,y=caveCenter(i*360)+Math.sin(i*2)*55;ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.fillStyle='#8cf0d1';ctx.shadowColor='#8cf0d1';ctx.shadowBlur=18;ctx.fillRect(-8,-8,16,16);ctx.restore()}
+ ctx.save();ctx.translate(flight.x,flight.y);ctx.rotate(Math.max(-.35,Math.min(.35,flight.vy/300)));ctx.globalAlpha=flight.invulnerable>0?.6:1;ctx.fillStyle='#f3d995';ctx.beginPath();ctx.moveTo(24,0);ctx.lineTo(-18,-13);ctx.lineTo(-10,0);ctx.lineTo(-18,13);ctx.closePath();ctx.fill();ctx.fillStyle='#8cf0d1';ctx.fillRect(-7,-5,10,10);if(power>0){ctx.fillStyle='#f8bd7e';ctx.beginPath();ctx.moveTo(-14,-6);ctx.lineTo(-30-ratio*22-Math.sin(t*30)*4,0);ctx.lineTo(-14,6);ctx.fill()}ctx.restore();
+ ctx.fillStyle='#bce4dd';ctx.font='14px system-ui';ctx.textAlign='left';ctx.fillText(`${Math.floor(flight.distance/10)} m · ${flight.gems} KRISTALLER`,25,30);
+}
+function drawExtra(dt,t){
+ if(currentGame==='kart'&&race)drawKart(t);else if(flight)drawCave(t);else{ctx.fillStyle='#0a1224';ctx.fillRect(0,0,W,H)}
+ if(phase==='rest'){ctx.fillStyle='#0a1224cc';ctx.fillRect(0,0,W,H);ctx.textAlign='center';ctx.fillStyle='#8df0c0';ctx.font='bold 58px system-ui';ctx.fillText(Math.ceil(rest),W/2,H/2);ctx.font='18px system-ui';ctx.fillText('Återhämtning · banan väntar',W/2,H/2+45)}
+}
+function updateExtraHUD(){
+ if(currentGame==='orbital')return;
+ const kart=currentGame==='kart',value=kart&&race?Math.min(100,(race.laps*4+race.gate)/12*100):flight?Math.min(100,flight.distance/300):0;
+ $('hudenergy').value=value;$('energy').value=value;$('hudenergytext').textContent=kart?(race?.laps||0)+' / 3 varv':Math.floor((flight?.distance||0)/10)+' m';$('energytext').textContent=Math.floor(value)+'%';
+ $('firerate').textContent=kart?Math.round((race?.speed||0)*.3)+' km/h':Math.round(ratio*100)+'% lyftkraft';
+ $('lives').textContent=kart?Math.round((race?.speed||0)*.3):mode==='chill'?'∞':lives;
+ document.querySelector('.specialhud').classList.remove('ready');
+}
+
 function refreshMenuSettings(){
  $('menumode').textContent='Spelläge: '+$('mode').selectedOptions[0].text;
  $('menutarget').textContent='Mål-watt: '+$('target').value+' W  ‹ ›';
@@ -96,7 +199,7 @@ function menuKey(e){
  if($('overlay').hidden||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter','Escape'].includes(e.key))return false;
  e.preventDefault();keys.clear();
  const buttons=menuButtons();let index=buttons.indexOf(document.activeElement);if(index<0)index=0;
- if(e.key==='Escape'){if(phase==='paused'&&!waitingForBike)resume();else if(phase!=='menu')showMenu();return true}
+ if(e.key==='Escape'){if(phase==='paused'&&!waitingForBike)resume();else if(phase==='menu')showArcade();else if(phase!=='arcade')showMenu();return true}
  if(e.key==='Enter'){if(!e.repeat)buttons[index]?.click();return true}
  const setting={menumode:'mode',menutarget:'target',menudifficulty:'difficulty'}[buttons[index]?.id];
  if(setting&&['ArrowLeft','ArrowRight'].includes(e.key))changeSetting(setting,e.key==='ArrowRight'?1:-1);
@@ -115,7 +218,9 @@ window.addEventListener('keyup',e=>keys.delete(e.key));window.addEventListener('
 function update(dt){
  if(!['playing','rest'].includes(phase))return;
  if(!demo&&!fresh()){pause('Anslutningen bröts');return}
- if(phase==='rest'){rest-=dt;if(rest<=0){phase='playing';player.invulnerable=2}return}
+ if(phase==='rest'){rest-=dt;if(rest<=0){phase='playing';if(player)player.invulnerable=2}return}
+ if(currentGame==='kart'){updateKart(dt);return}
+ if(currentGame==='cave'){updateCave(dt);return}
  gameTime+=dt;player.invulnerable=Math.max(0,player.invulnerable-dt);
  player.x=Math.min(W-30,Math.max(30,player.x+((keys.has('ArrowRight')?1:0)-(keys.has('ArrowLeft')?1:0))*410*dt));
 
@@ -142,6 +247,7 @@ function update(dt){
 }
 function alien(e,t){ctx.save();ctx.translate(e.x,e.y);const color=['#8df0c0','#a7a3ff','#ffbf83'][e.type];ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=13;const p=4;const rows=['00100100','00011000','00111100','01111110','11011011','11111111',Math.sin(t*3)>0?'00100100':'01000010'];for(let r=0;r<rows.length;r++)for(let c=0;c<8;c++)if(rows[r][c]==='1')ctx.fillRect((c-4)*p,(r-3)*p,p,p);ctx.restore()}
 function draw(dt,t){
+ if(currentGame!=='orbital'&&phase!=='arcade'){drawExtra(dt,t);return}
  ctx.fillStyle='#0a1224';ctx.fillRect(0,0,W,H);const glow=ctx.createRadialGradient(740,200,0,740,200,600);glow.addColorStop(0,'#24285165');glow.addColorStop(1,'#0a122400');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
  for(const s of stars){if(phase==='playing')s.y=(s.y+s.s*dt)%H;ctx.fillStyle=s.r>1?'#a6c8df99':'#5f789666';ctx.fillRect(s.x,s.y,s.r,s.r)}
  ctx.strokeStyle='#17263b';ctx.lineWidth=1;for(let x=0;x<W;x+=50){ctx.beginPath();ctx.moveTo(x,H*.63);ctx.lineTo(x,H);ctx.stroke()}ctx.setLineDash([3,9]);ctx.beginPath();ctx.moveTo(0,H*.60);ctx.lineTo(W,H*.60);ctx.stroke();ctx.setLineDash([]);
@@ -167,9 +273,11 @@ function frame(t){let gap=(t-lastFrame)/1000;lastFrame=t;if(gap>2)pause();const 
  $('hudenergy').value=boostRemaining>0?boostRemaining*10:energy;$('hudenergytext').textContent=boostRemaining>0?'2× · '+Math.ceil(boostRemaining)+' s':energy>=100?'REDO':Math.floor(energy)+'%';document.querySelector('.specialhud').classList.toggle('ready',energy>=100||boostRemaining>0);
  $('hudwatts').textContent=(demo||fresh()?Math.round(power):'—')+' / '+target+' W';$('hudpower').max=target;$('hudpower').value=Math.min(power,target);$('powerhud').classList.toggle('at-target',power>=target);$('hudlabel').textContent=demo?'DEMO · EFFEKT / MÅL':fresh()?'REAKTOREFFEKT / MÅL':'INGEN LIVEDATA / MÅL';
  $('connection').textContent=demo?'DEMO · simulerad effekt':fresh()?'● PM5 ansluten':'○ Väntar på PM5';$('connection').className='status'+(fresh()&&!demo?' live':'');
- $('watts').textContent=demo||fresh()?Math.round(power):'—';$('cadence').textContent=demo?'Simulerad effekt':fresh()?(telemetry.metrics?.cadence_rpm??'—')+' rpm':'Ingen livedata';$('powerbar').value=ratio;$('energy').value=boostRemaining>0?boostRemaining*10:energy;$('energytext').textContent=boostRemaining>0?'Dubbelskott · '+Math.ceil(boostRemaining)+' s':Math.floor(energy)+'%';$('firerate').textContent=power>0?fireRate().toFixed(1)+' skott/s':'Ingen eld';$('score').textContent=score;$('wave').textContent=wave;$('lives').textContent=mode==='chill'?'∞':lives;$('best').textContent=records[recordKey()]||0;$('special').disabled=phase!=='playing'||energy<100||boostRemaining>0;$('special').classList.toggle('primary',energy>=100||boostRemaining>0);$('special').textContent=boostRemaining>0?'DUBBELSKOTT · '+Math.ceil(boostRemaining)+' s':energy>=100?'★ SPECIAL REDO · Space':'Specialattack · Space';$('pause').textContent=phase==='paused'?'Återuppta · P':'Pausa · P';
+ $('watts').textContent=demo||fresh()?Math.round(power):'—';$('cadence').textContent=demo?'Simulerad effekt':fresh()?(telemetry.metrics?.cadence_rpm??'—')+' rpm':'Ingen livedata';$('powerbar').value=ratio;$('energy').value=boostRemaining>0?boostRemaining*10:energy;$('energytext').textContent=boostRemaining>0?'Dubbelskott · '+Math.ceil(boostRemaining)+' s':Math.floor(energy)+'%';$('firerate').textContent=power>0?fireRate().toFixed(1)+' skott/s':'Ingen eld';$('score').textContent=score;$('wave').textContent=wave;$('lives').textContent=mode==='chill'?'∞':lives;$('best').textContent=records[recordKey()]||0;$('special').disabled=currentGame!=='orbital'||phase!=='playing'||energy<100||boostRemaining>0;$('special').classList.toggle('primary',energy>=100||boostRemaining>0);$('special').textContent=boostRemaining>0?'DUBBELSKOTT · '+Math.ceil(boostRemaining)+' s':energy>=100?'★ SPECIAL REDO · Space':'Specialattack · Space';$('pause').textContent=phase==='paused'?'Återuppta · P':'Pausa · P';
+ updateExtraHUD();
  requestAnimationFrame(frame)
 }
+showArcade();
 requestAnimationFrame(frame);
 </script>
 </body></html>

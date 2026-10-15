@@ -18,7 +18,7 @@ Levande samling för framtida spel och träningsfunktioner.
 - Vågor, poäng och uppgraderingar mellan vågorna.
 - Chill utan förlust av liv, Arcade med liv, Intervall med återhämtning mellan vågor.
 
-## Kart / cykelspel (användarens idé)
+## Kart / cykelspel (användarens idé) — första version: Velodrift
 
 Ett cykelspel eller Mario Kart-inspirerat spel med egen grafik och egna banor.
 
@@ -44,7 +44,7 @@ Välj mellan att skjuta och spara energi.
 Flytta mellan fiender med pilarna. Automatvapen får sin eldkraft av trampandet.
 Samla uppgraderingar mellan vågorna.
 
-## Grottflygning
+## Grottflygning — första version: Lumen
 
 Trampandet ger lyftkraft, pilarna styr i sidled. Jämn effekt hjälper spelaren
 att hålla en stabil höjd mellan hinder.

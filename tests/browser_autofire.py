@@ -8,6 +8,7 @@ with sync_playwright() as p:
   route.fulfill(json={**live,'last_sample':time.time()})
  page.route('**/api/state',respond)
  page.goto('http://127.0.0.1:18765/game')
+ page.get_by_role('button',name='Orbital',exact=False).click()
  page.get_by_role('button',name='Starta uppdrag').click()
  expect(page.locator('#overtitle')).to_have_text('Börja trampa')
  live.update(connected=True,metrics={'power_w':0})

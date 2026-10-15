@@ -9,6 +9,7 @@ with sync_playwright() as p:
     errors = []
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.goto('http://127.0.0.1:18765/game')
+    page.get_by_role('button',name='Orbital',exact=False).click()
     page.screenshot(path='/tmp/orbital-menu.png',full_page=True)
     page.get_by_role('button',name='Prova demo utan cykel').click()
     expect(page.locator('#overlay')).to_be_hidden()
@@ -85,6 +86,7 @@ with sync_playwright() as p:
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     page.goto('http://127.0.0.1:18765/game')
+    page.get_by_role('button',name='Orbital',exact=False).click()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     assert not errors, errors
     print('Browser checks passed: controls, demo, special, upgrades, modes, disconnect, dashboard, mobile layout.')

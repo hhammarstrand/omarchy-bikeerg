@@ -21,3 +21,10 @@ Genomfört: spelmeny, inställningar, pausmeny, uppgraderingar och helskärm.
 - [ ] Lägg till lekfulla kalorijämförelser, till exempel ”motsvarar X öl”.
 - [ ] Gör jämförelsemåttet valbart och visa antagandet, exempelvis ölens volym och kcal per portion. Lägg gärna till fler jämförelser.
 - [ ] Behåll all träningshistorik lokalt utanför repot; lägg inte personliga totalsiffror eller exporter på publik GitHub.
+
+## Arkad
+
+- [x] Gemensam spelväljare med piltangenter och mus.
+- [x] Velodrift: kartspel med styrning, checkpoints och maxfart vid mål-watt.
+- [x] Lumen: grottflygning med trampstyrd lyftkraft och kristaller.
+- [x] Samma webbsida, menyer och statistik i fönster och helskärm.

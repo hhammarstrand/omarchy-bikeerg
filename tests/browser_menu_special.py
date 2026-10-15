@@ -6,6 +6,7 @@ with sync_playwright() as p:
     page=browser.new_page(viewport={'width':1440,'height':1000})
     errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     page.goto('http://127.0.0.1:18765/game')
+    page.get_by_role('button',name='Orbital',exact=False).click()
     expect(page.locator('#start')).to_be_focused()
     page.keyboard.press('ArrowUp')
     expect(page.locator('#menudifficulty')).to_be_focused()

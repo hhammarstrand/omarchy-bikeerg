@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "id": "hhammarstrand.bikeerg",
   "name": "BikeErg",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "hhammarstrand",
-  "description": "Live BikeErg watts, workout time and details with browser game launcher",
+  "description": "Live BikeErg stats, private workout history and a three-game browser arcade",
   "kinds": [
     "bar-widget"
   ],

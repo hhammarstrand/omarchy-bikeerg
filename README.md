@@ -14,8 +14,8 @@ and a Concept2 PM5 connected over Bluetooth.
   when disconnected. You don't have to be pedalling for it to remain visible.
 - **Workout details:** click the widget for power, cadence, speed, distance,
   calories, averages and other standard metrics supplied by the monitor.
-- **Browser game launcher:** open **Orbital** from the panel. Your power controls automatic
-  fire in a Space Invaders-inspired arcade game.
+- **Arcade launcher:** open the game selection from the panel. Play Orbital,
+  Velodrift or Lumen using the same live power feed.
 - **Shared connection:** one background process supplies both the desktop
   widget and the browser. The browser needs no Bluetooth permissions.
 - **Automatic startup and reconnect:** a systemd user service starts at login
@@ -26,7 +26,9 @@ and a Concept2 PM5 connected over Bluetooth.
 An early, working personal project, tested with a real BikeErg on Omarchy.
 The bar and stats panel are functional. Orbital includes Arcade, Chill and
 Interval modes, enemy waves, upgrades, a charged special attack and demo mode.
-A local dashboard records workouts and displays power and cadence charts.
+Two additional playable prototypes, Velodrift and Lumen, share the keyboard
+arcade menu and settings. A local dashboard records workouts and displays power
+and cadence charts.
 Future game concepts, including a target-watt kart racer, live in [IDEAS.md](IDEAS.md).
 Planned improvements are tracked in [TODO.md](TODO.md).
 
@@ -84,11 +86,11 @@ copy before cloning.
 2. Wait for the BikeErg widget to appear beside the clock.
 3. Start pedalling to see live watts and the PM5's workout time.
 4. Click the widget to open the stats panel.
-5. Select **Öppna spel** to launch Orbital, or **Träningslogg / dashboard** for history.
+5. Select **Öppna spel** to launch the arcade, or **Träningslogg / dashboard** for history.
 
 The interface is currently in Swedish. The game can also be opened directly:
 
-**[Open Orbital](http://127.0.0.1:18765/game)** ·
+**[Open the arcade](http://127.0.0.1:18765/game)** ·
 **[Workout dashboard](http://127.0.0.1:18765/dashboard)** ·
 **[Inspect live JSON](http://127.0.0.1:18765/api/state)**
 
@@ -99,6 +101,38 @@ These links work on the computer running the bridge.
 Time and distance in the desktop panel come from the **PM5 workout**, not from
 how long the app has been open. Reset or start a workout on the PM5 to begin a
 new workout there.
+
+### Choose a game
+
+The arcade opens with three game cards. Use arrows and Enter, or click a card.
+Each game has target watts, difficulty, Arcade, Chill and Interval modes, plus a
+clearly marked demo slider. **Arkaden** returns to game selection; **Spelmeny**
+opens settings for the selected game. Scores are stored separately per game,
+mode, difficulty and demo/live input.
+
+| Game | Pedalling | Keyboard | Objective |
+| --- | --- | --- | --- |
+| Orbital | Controls firing cadence and special charging | Left/right; Space for twin shots | Clear enemy waves |
+| Velodrift | Accelerates smoothly; target watts reaches maximum speed | Left/right steers the kart | Complete three laps, pass checkpoints in order, collect coins |
+| Lumen | Controls lift; about 65% target holds altitude | Left/right moves the craft | Travel 3 km through the cave and collect crystals |
+
+**Velodrift:** higher watts above target never increase maximum speed. Grass
+slows the kart and collisions with traffic reduce speed. Chill is free driving;
+Interval rests for 20 seconds after each lap. Difficulty changes traffic speed.
+
+**Lumen:** more power makes the craft rise; less power makes it descend. Cave
+width depends on difficulty. Arcade gives three shields, Chill has no game over,
+and Interval provides 20 seconds of rest every 500 metres.
+
+Game distances and speeds are simulated and separate from PM5 workout data.
+These are early playable prototypes with one kart circuit and a procedural cave.
+
+### Fullscreen
+
+The fullscreen button expands the **entire page**, keeping the same header,
+sidebar, controls, menus and responsive layout as windowed mode. There is no
+separate fullscreen-only scene or hidden stats panel. P / Escape and menu arrows
+continue to work; the browser may use Escape to exit fullscreen first.
 
 ### Orbital controls and modes
 
@@ -244,7 +278,7 @@ To remove it completely, also remove the plugin directory, the dedicated
 | `manifest.json` | Omarchy plugin metadata |
 | `Widget.qml` | Bar widget, popup and browser launcher |
 | `bridge.py` | BLE connection, FTMS decoding, runtime state and HTTP server |
-| `game.html` | Orbital arcade game |
+| `game.html` | Shared arcade, Orbital, Velodrift and Lumen |
 | `dashboard.html` | Local workout history and charts |
 | `history.py` | SQLite session recording and queries |
 | `IDEAS.md` | Game and dashboard idea bank |
@@ -262,6 +296,7 @@ git diff --check
 uv run --with playwright python tests/browser_check.py
 uv run --with playwright python tests/browser_autofire.py
 uv run --with playwright python tests/browser_menu_special.py
+uv run --with playwright python tests/browser_arcade.py
 ```
 
 Real-device validation has covered power, cadence, workout time, distance,
