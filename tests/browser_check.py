@@ -42,8 +42,11 @@ with sync_playwright() as p:
     expect(page.locator('#special')).to_have_text('★ SPECIAL REDO · Space')
     page.screenshot(path='/tmp/orbital-special-ready.png',full_page=True)
     page.keyboard.press('Space')
+    assert page.evaluate('boostRemaining>9 && enemies.length>0')
+    assert page.evaluate('energy') < 1
+    page.evaluate('enemies=[]')
     expect(page.locator('#overtitle')).to_have_text('Sektorn säkrad')
-    page.get_by_role('button',name='Snabbare eld',exact=False).click()
+    page.keyboard.press('Enter')
     expect(page.locator('#wave')).to_have_text('2')
     page.screenshot(path='/tmp/orbital-playing.png',full_page=True)
     page.get_by_role('button',name='Spelmeny',exact=True).click()
@@ -55,7 +58,7 @@ with sync_playwright() as p:
     page.get_by_role('button',name='Spelmeny',exact=True).click()
     page.locator('#mode').select_option('interval')
     page.get_by_role('button',name='Prova demo utan cykel').click()
-    page.evaluate('energy=100; special()')
+    page.evaluate('enemies=[]')
     expect(page.locator('#overtitle')).to_have_text('Sektorn säkrad')
     page.get_by_role('button',name='Energicell',exact=False).click()
     assert page.evaluate('phase') == 'rest'

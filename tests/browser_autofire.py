@@ -34,7 +34,7 @@ with sync_playwright() as p:
  assert page.locator('#hudenergy').evaluate('(e)=>e.value')==100
  page.keyboard.press('Space')
  page.wait_for_function('energy<1',timeout=2000)
- expect(page.locator('#overtitle')).to_have_text('Sektorn säkrad')
+ assert page.evaluate('boostRemaining>9 && enemies.length>0')
  assert not errors,errors
  print('Live-data autofire checks passed: waiting, zero watts, ramp-up, stop and restart; no Space presses.')
  b.close()

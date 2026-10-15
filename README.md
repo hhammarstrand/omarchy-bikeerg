@@ -107,10 +107,16 @@ new workout there.
   `shots/s = (0.2 + 9.8 × min(watts / target, 1)^4) × upgrade_multiplier`.
   At zero watts there is no fire. Before upgrades: 50% target gives 0.8 shots/s,
   75% gives 3.3, and target watts gives 10. More watts above target adds no fire rate.
-- **Space:** use the special attack when energy reaches 100%. A pulsing golden
+- **Space:** activate ten seconds of twin shots when energy reaches 100%.
+  Each volley fires two parallel projectiles instead of one; the firing cadence
+  still depends on watts, and enemies are not cleared automatically. The timer
+  freezes while paused or choosing an upgrade; charging resumes when it expires. A pulsing golden
   ring around the ship, an in-game label and a highlighted button signal readiness.
   An in-game special-energy bar shows progress in fullscreen too. A full charge
   takes eight seconds at target watts, or sixteen seconds at half target watts.
+- **Menus:** Up/down selects a highlighted option, left/right changes settings
+  (mode, target watts, difficulty) or moves between actions, Enter confirms, and
+  Escape returns/resumes. Settings are available inside the fullscreen menu too.
 - **P / Escape:** pause or resume. Switching windows or losing fresh PM5 data pauses
   the action; resume explicitly when ready. When starting a new game before
   the first data arrives, it waits and starts automatically once PM5 data is fresh.
@@ -254,6 +260,8 @@ bash -n install.sh
 git diff --check
 # Browser integration checks (requires Chromium and the local bridge):
 uv run --with playwright python tests/browser_check.py
+uv run --with playwright python tests/browser_autofire.py
+uv run --with playwright python tests/browser_menu_special.py
 ```
 
 Real-device validation has covered power, cadence, workout time, distance,

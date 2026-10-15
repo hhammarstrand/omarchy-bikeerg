@@ -14,7 +14,7 @@ Levande samling för framtida spel och träningsfunktioner.
 
 - Piltangenter styr skeppet. Trampandet styr automatisk eldhastighet.
 - Lugn trampning ger grundeld, mål-watt ger maximal eldhastighet.
-- Energi laddas av trampandet; mellanslag utlöser specialattack.
+- Energi laddas av trampandet; mellanslag ger 10 sekunder med två parallella skott per salva, utan ökad eldhastighet.
 - Vågor, poäng och uppgraderingar mellan vågorna.
 - Chill utan förlust av liv, Arcade med liv, Intervall med återhämtning mellan vågor.
 
