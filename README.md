@@ -116,6 +116,10 @@ new workout there.
 - **Demo:** simulated watts with a slider; clearly labelled and kept separate from
   live-game records. It does not generate workout data.
 
+A power HUD inside the playfield shows current / target watts and a progress bar,
+including in fullscreen. The bar fills at target watts; the number still shows
+actual watts above target.
+
 Target watts and enemy difficulty are separate settings, applied on a new game.
 Records and preferences are stored in browser localStorage. Closing the tab ends
 an unfinished game. Game upgrades are selected between waves.

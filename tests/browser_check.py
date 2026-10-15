@@ -13,6 +13,14 @@ with sync_playwright() as p:
     page.get_by_role('button',name='Prova demo utan cykel').click()
     expect(page.locator('#overlay')).to_be_hidden()
     expect(page.locator('#watts')).to_have_text('90')
+    expect(page.locator('#hudwatts')).to_have_text('90 / 100 W')
+    page.get_by_role('button',name='Helskärm',exact=False).click()
+    page.wait_for_function('document.fullscreenElement !== null')
+    expect(page.locator('#powerhud')).to_be_visible()
+    page.screenshot(path='/tmp/orbital-fullscreen.png')
+    page.evaluate('document.exitFullscreen()')
+    page.wait_for_function('document.fullscreenElement === null')
+
     rates = page.evaluate('''() => {
         const oldPower=power,oldRatio=ratio,oldBonus=fireBonus;
         fireBonus=1;power=1;
