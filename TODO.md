@@ -2,92 +2,56 @@
 
 ## Kritisk granskning · 2026-10-15
 
-Prioriteringen nedan bygger på kodgranskning, befintliga tester och riktade
-kontroller i Chromium. En sammanhängande spelrunda med den riktiga PM5:an har
-inte verifierats i denna granskning. **P1** påverkar loggens korrekthet eller
-hindrar ett rättvist spel; **P2** är tydliga funktions- och användbarhetsfel;
-**P3** är mindre men konkreta brister.
+Åtgärdat och testat 2026-10-16 där rutan är kryssad. Tester använder syntetisk
+PM5-data och Chromium; en fysisk slutkontroll väntar fortfarande.
 
-### P1 · Fixa först
+### P1 · Datakvalitet och spelstart
 
-- [ ] **Sluta logga gamla FTMS-värden som nya.** `bridge.py` uppdaterar en enda
-  `last_sample` för både watt och Indoor Bike Data, medan `history.py` återanvänder
-  senast kända kadens och hastighet. Separera tidsstämplar för watt, kadens och
-  hastighet, låt utgångna värden vara okända och rensa dem vid återanslutning.
-  Repro: 60 sekunder med enbart färska 0 W-paket efter 50 rpm/20 km/h gav ett
-  fortfarande aktivt pass och 333 m falsk distans. Lägg till regressionstest
-  för avbruten FTMS-ström och återanslutning.
-- [ ] **Starta inte ett spel innan första tramptaget.** Färsk anslutning vid
-  0 W/0 rpm startar nu Orbital och fienderna kan anfalla medan spelaren väntar.
-  Vänta på faktisk rörelse, visa tydlig väntestatus och börja spelklockan först
-  då. Testa PM5 ansluten med nollvärden följt av första positiva mätningen.
-- [ ] **Gör arkadmenyn och spelplanen användbara i smala fönster.** `canvas` är
-  alltid 1000×690 men `.stage` får proportionerna 1,3 och 0,9 vid brytpunkterna,
-  så grafiken dras ut. Vid 390 px täcker wattpanelen rubriken och tredje
-  spelkortet klipps. Bevara spelplanens proportioner, håll HUD och alla spelval
-  synliga och kontrollera både vanligt fönster och helskärm i flera storlekar.
-- [ ] **Visa ärliga summeringar i dashboarden.** De fyra korten summerar endast
-  `/api/sessions` senaste 200 pass men ser ut som totaler. Märk nuvarande
-  siffror som ”senaste 200” tills en separat aggregering över hela historiken
-  finns. Verifiera med fler än 200 pass. Se totaldashboarden nedan.
+- [x] Ge varje PM5-värde egen tidsstämpel och rensa gamla värden vid
+  återanslutning. Loggen slutar nu förlänga ett pass och lägga till distans när
+  bara 0 W-paket kommer in; regressionstest täcker det tidigare felet som gav
+  333 m falsk distans på 60 sekunder.
+- [x] Vänta på första positiva wattmätningen innan ett spel och dess klocka
+  startar. Orbital kan därmed inte förlora sköldar medan användaren väntar på
+  första tramptaget.
+- [x] Behåll spelplanens 1000:690-proportioner i smala fönster. Arkadmenyn
+  visas utan att wattpanelen täcker rubriken eller tredje spelkortet klipps.
+- [x] Låt periodkorten i dashboarden summera hela historiken. Passlistan är
+  fortsatt begränsad till 200; ett test med 205 pass verifierar totalerna.
 
 ### P2 · Spel, mätning och längre pass
 
-- [ ] **Koppla Lumens framfart och poäng till trampning.** I Chill går grottan
-  framåt vid 0 W (`85 + ratio*65`) och kristaller kan ge poäng utan aktivitet;
-  30 sekunder med 0 W gav 100 poäng i test. Bestäm hur stopp och korta pauser
-  ska fungera och säkerställ att progression kräver trampning.
-- [ ] **Låt Velodrifts väglogik matcha den ritade asfalten.** `kartOnRoad()`
-  klassar vissa asfaltspunkter som gräs och vissa gräspunkter som asfalt.
-  Använd samma geometri för ritning och kollisions-/fartregler. Testa ett
-  sammanhängande varv med pilar och watt; nuvarande test flyttar bilen direkt
-  mellan checkpoints och bevisar inte att banan går att köra normalt.
-- [ ] **Rita och rensa Lumens träffpartiklar.** Väggträffar anropar `burst()`
-  men `drawExtra()` varken visar eller åldrar partiklarna. En längre Chill-runda
-  fyller därför `particles` med osynliga objekt. Testa att antalet återgår till
-  noll efter träffanimationen.
-- [ ] **Anpassa oändliga Chill-lägens HUD.** Velodrift visar 3/3 varv och full
-  progressbar även efter varv 3, medan texten fortsätter med 4/3. Lumen visar
-  ett 3 km-mål som stannar på 100 % trots fortsatt flygning. Visa aktuell
-  distans/varv och ett meningsfullt nästa delmål i Chill.
-- [ ] **Förbättra träningsloggens distans och diagram.** PM5:s ackumulerade
-  distans läses men loggen integrerar hastighet, vilket kan ge drift. Använd
-  giltiga PM5-deltan när de finns och hastighet som reserv, med regler för
-  återställning/avbrott. Markera okända luckor i diagram i stället för att dra
-  en obruten linje över dem.
-- [ ] **Gör dashboarden lättare under långa pass.** Den hämtar om hela valda
-  passets mätserie var femte sekund och bygger om hela passlistan, vilket kan
-  ge långsam rendering och tappat tangentbordsfokus. Uppdatera endast det som
-  ändrats, behåll fokus/scroll och begränsa antalet punkter i diagrammet utan
-  att förlora toppar.
-- [ ] **Flytta PM5-adress och enhetsetikett till privat lokal konfiguration.**
-  Verklig hårdvaruidentifierare ligger nu som standard i publika `bridge.py`,
-  och README ber andra användare redigera källkoden. Använd neutral exempeldata
-  i repot och gitignorerad lokal konfiguration eller miljövariabler; dokumentera
-  uppgradering utan lokala kodändringar. Bedöm separat om äldre Git-historik
-  behöver åtgärdas.
-- [ ] **Verifiera en verklig träningsrunda från PM5 till spel och logg.** Testa
-  stillastående ansluten monitor, första tramptaget, acceleration, kort stopp,
-  anslutningsavbrott, återanslutning och spel i helskärm. Komplettera
-  webbläsartesterna med körning som använder verkliga tangenter och normal
-  spelmekanik, utan direkt ändring av interna spelvariabler.
+- [x] Knyt Lumens framfart och poäng till watt. Vid 0 W står expeditionens
+  distans stilla även i Chill.
+- [x] Använd samma bankant för Velodrifts ritning och fartregel. Ett helt varv
+  har körts med riktiga piltangenttryck i webbläsartestet, utan teleportering.
+- [x] Visa och rensa träffpartiklar även i Velodrift och Lumen; testet väntar
+  tills partiklar efter en effekt har försvunnit.
+- [x] Ge Chill-lägena återkommande delmål i HUD: nästa varv i Velodrift och
+  nästa 500 m i Lumen, utan fastlåst 3/3 eller 3 km-mätare.
+- [x] Använd PM5:s ackumulerade distans när den är färsk och hastighet som
+  reserv. Diagram markerar mätluckor i stället för att binda ihop dem.
+- [x] Begränsa passdiagrammens datapunkter med toppar bevarade. Dashboarden
+  hämtar bara om detaljer när passet ändras och behåller listans fokus/scroll.
+- [x] Flytta aktuell PM5-adress och enhetsetikett till en privat konfigurationsfil
+  utanför repot. Ett neutralt exempel finns i repot. Äldre publika Git-commits
+  innehåller fortfarande den tidigare identifieraren; historiken har inte
+  skrivits om eftersom det skulle bryta befintliga kloner.
+- [ ] Kör en hel fysisk PM5-runda: stillastående ansluten monitor, första
+  tramptaget, acceleration, kort stopp, avbrott, återanslutning och helskärm.
+  Syntetiska flöden och ett komplett Velodrift-varv är redan testade.
 
 ### P3 · Tydlighet och tillgänglighet
 
-- [ ] Visa neutral arkadstatistik vid spelval i stället för Orbital-specifik
-  specialattack, våg och instruktioner innan ett spel valts.
-- [ ] Låt piltangenter ändra ett fokuserat wattfält eller `select` i sidopanelen
-  även när spelmenyn är öppen; menygenvägarna ska då inte stjäla tangenterna.
-- [ ] Uppdatera `aria-label` för den sekundära HUD-mätaren per spel. Den heter
-  nu ”Specialattackens laddning” även när den visar varv eller grottdistans.
-- [ ] Hantera PM5:s ogiltiga tidsvärde 65535 i barens tid och återstående tid;
-  visa streck i stället för 1092:15.
-- [ ] Rätta inaktuell text: dashboardens ”Öppna Orbital” ska leda till
-  ”Öppna arkaden”, och README ska beskriva Velodrift som befintligt spel även
-  i introduktion och arkitekturdiagram.
-- [ ] Bedöm åtkomst till träningshistorik på datorer med flera lokala konton.
-  Databasfilen är privat, men HTTP-API:t på localhost saknar autentisering och
-  kan läsas av andra lokala användare.
+- [x] Visa neutral arkadvy innan ett spel väljs, utan Orbital-specifika mätare.
+- [x] Låt piltangenter ändra ett fokuserat wattfält eller val i sidopanelen;
+  under aktivt spel styr vänster/höger fortfarande även efter demo-reglaget.
+- [x] Uppdatera den sekundära HUD-mätarens skärmläsaretikett per spel.
+- [x] Visa streck för PM5:s ogiltiga tidsvärde 65535 i baren.
+- [x] Rätta dashboardens arkadlänk och README:s inaktuella spelbeskrivningar.
+- [x] Bedöm åtkomst på datorer med flera lokala konton. Databasen är 0600 men
+  localhost-API:t saknar användarautentisering; detta dokumenteras nu i README.
+  En separat autentiseringslösning behövs om datorn delas mellan konton.
 
 ## Menystyrning med tangentbord
 
@@ -101,15 +65,15 @@ Genomfört: spelmeny, inställningar, pausmeny, uppgraderingar och helskärm.
 
 ## Totaldashboard och träningsöversikt
 
-- [ ] Lägg till vecko-, månads-, års- och livstidstotaler.
-- [ ] Visa antal pass, träningstid, distans och kalorier för vald period.
-- [ ] Visa diagram över utvecklingen och jämför med föregående period.
-- [ ] Lägg till val av period, kalenderår och månad samt tydliga datumgränser i lokal tidszon.
-- [ ] Summera hela historiken, inte bara de senaste 200 passen i passlistan.
-- [ ] Registrera kalorier från PM5 när de finns; skilj uppmätta/loggade värden från eventuella uppskattningar och hantera äldre pass utan kaloridata.
-- [ ] Lägg till lekfulla kalorijämförelser, till exempel ”motsvarar X öl”.
-- [ ] Gör jämförelsemåttet valbart och visa antagandet, exempelvis ölens volym och kcal per portion. Lägg gärna till fler jämförelser.
-- [ ] Behåll all träningshistorik lokalt utanför repot; lägg inte personliga totalsiffror eller exporter på publik GitHub.
+- [x] Lägg till vecko-, månads-, års- och livstidstotaler.
+- [x] Visa antal pass, träningstid, distans och kalorier för vald period.
+- [x] Visa diagram över utvecklingen och jämför med föregående period.
+- [x] Lägg till val av period, kalenderår och månad samt tydliga datumgränser i lokal tidszon.
+- [x] Summera hela historiken, inte bara de senaste 200 passen i passlistan.
+- [x] Registrera kalorier från PM5 när de finns; skilj uppmätta/loggade värden från eventuella uppskattningar och hantera äldre pass utan kaloridata.
+- [x] Lägg till lekfulla kalorijämförelser, till exempel ”motsvarar X öl”.
+- [x] Gör jämförelsemåttet valbart och visa antagandet, exempelvis ölens volym och kcal per portion. Lägg gärna till fler jämförelser.
+- [x] Behåll all träningshistorik lokalt utanför repot; lägg inte personliga totalsiffror eller exporter på publik GitHub.
 
 ## Arkad
 

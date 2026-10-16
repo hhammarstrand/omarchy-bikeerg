@@ -26,10 +26,9 @@ and a Concept2 PM5 connected over Bluetooth.
 An early, working personal project, tested with a real BikeErg on Omarchy.
 The bar and stats panel are functional. Orbital includes Arcade, Chill and
 Interval modes, enemy waves, upgrades, a charged special attack and demo mode.
-Two additional playable prototypes, Velodrift and Lumen, share the keyboard
-arcade menu and settings. A local dashboard records workouts and displays power
-and cadence charts.
-Future game concepts, including a target-watt kart racer, live in [IDEAS.md](IDEAS.md).
+Velodrift and Lumen share the keyboard arcade menu and settings. The local
+dashboard records workouts, shows calendar totals and compares periods.
+More game concepts live in [IDEAS.md](IDEAS.md).
 Planned improvements are tracked in [TODO.md](TODO.md).
 
 ## Requirements
@@ -53,10 +52,20 @@ git clone https://github.com/hhammarstrand/omarchy-bikeerg.git \
 cd ~/.config/omarchy/plugins/hhammarstrand.bikeerg
 ```
 
-**Configure your monitor before starting the service:** edit `ADDRESS` in
-`bridge.py` to match your PM5's Bluetooth address. The current default is the
-maintainer's own monitor. The `device` label in the initial state is also a
-personal default and can be changed independently.
+**Configure your monitor before starting the service.** Copy the neutral
+example to a private file outside the repository, then replace its sample
+Bluetooth address with your PM5's address. The optional `device` label is shown
+in the widget.
+
+```bash
+mkdir -p ~/.config/bikeerg
+cp config.example.json ~/.config/bikeerg/config.json
+chmod 600 ~/.config/bikeerg/config.json
+${EDITOR:-nano} ~/.config/bikeerg/config.json
+```
+
+The service reads `~/.config/bikeerg/config.json`, or the path in
+`BIKEERG_CONFIG` when set. Local monitor identifiers do not need edits in Git.
 
 To find the address, wake the PM5, select **Connect**, then scan:
 
@@ -153,7 +162,8 @@ continue to work; the browser may use Escape to exit fullscreen first.
   Escape returns/resumes. Settings are available inside the fullscreen menu too.
 - **P / Escape:** pause or resume. Switching windows or losing fresh PM5 data pauses
   the action; resume explicitly when ready. When starting a new game before
-  the first data arrives, it waits and starts automatically once PM5 data is fresh.
+  the first tramptag, it waits and starts automatically when a positive watt
+  reading arrives from the PM5.
 - **Arcade:** enemy waves and a limited number of shields.
 - **Chill:** no game over; enemies can be cleared at your own pace.
 - **Interval:** 20 seconds of recovery after each completed wave and upgrade choice.
@@ -175,12 +185,18 @@ After 90 seconds without movement or fresh data, the session closes. A reset of
 the PM5 elapsed-time counter also starts a new session. Restarting the service
 finalizes any previously open session.
 
-Open `/dashboard` for the latest 200 sessions, recorded time and distance,
-average/maximum watts, average cadence, and power/cadence charts.
+Open `/dashboard` for week, month, year and lifetime totals with a comparison
+to the previous period. Choose calendar week, month or year. Totals cover the
+entire local history; the pass list shows the latest 200. A pass belongs to the
+local date on which it started. The selected pass shows power/cadence charts,
+average/maximum watts and PM5 calories when available.
 Logging begins when the bridge receives data; earlier parts of a workout cannot
 be recovered. Recorded time includes short connected pauses; unknown time during
-an interruption is excluded. Distance is integrated from reported speed, so
-these totals can differ from the complete workout on the PM5.
+an interruption is excluded. New passes use PM5 cumulative distance deltas when
+available and fresh speed as a fallback. Older recorded totals are not rewritten.
+PM5 calorie deltas are recorded from the first reading in a session; older passes
+and intervals without calorie data are shown as missing, not estimated. The
+dashboard's optional beer/chocolate/banana comparisons show their kcal assumptions.
 
 **Workout history is private local data**, stored outside this repository:
 
@@ -194,6 +210,8 @@ excludes databases, `data/`, `workouts/`, and `exports/` as a backstop. No worko
 database or real workout exports belong in a commit. To back up your history,
 stop `bikeerg.service` and copy this database to a private location, then start
 the service again. The dashboard is available only on the local computer.
+On a computer with multiple local OS users, the localhost HTTP API has no
+per-user authentication; another local user could query workout history.
 
 A dash in the panel means that a metric is unavailable. Heart rate requires a
 compatible sensor connected to the PM5. Values may stop updating when the
@@ -208,9 +226,10 @@ Concept2 PM5
 bridge.py — systemd user service
     ├── $XDG_RUNTIME_DIR/bikeerg.json ──► Omarchy widget and stats panel
     └── http://127.0.0.1:18765
-          ├── /game         ──────────► Orbital
+          ├── /game         ──────────► Three-game arcade
           ├── /dashboard    ──────────► Workout dashboard
           ├── /api/sessions ──────────► Local workout history
+          ├── /api/overview ──────────► Calendar totals and comparison
           └── /api/state    ──────────► Live JSON
 ```
 
@@ -224,7 +243,7 @@ resistance. The BikeErg's damper is adjusted manually.
 
 The HTTP server binds to loopback only and does not enable CORS. No account,
 cloud service or Concept2 Logbook credentials are required. The bridge writes current runtime state and a separate private local workout database.
-Only the dashboard reads workout history; nothing is sent to GitHub.
+The dashboard reads workout history locally; nothing is sent to GitHub.
 
 ## Manage and troubleshoot
 
@@ -233,7 +252,7 @@ Only the dashboard reads workout history; nothing is sent to GitHub.
 systemctl --user status bikeerg
 journalctl --user -u bikeerg -n 50 --no-pager
 
-# Restart after changing the Bluetooth address or bridge code
+# Restart after changing private config or bridge code
 systemctl --user restart bikeerg
 
 # Inspect current data
@@ -257,7 +276,7 @@ git pull --ff-only
 systemctl --user restart bikeerg
 ```
 
-Keep track of local edits to `bridge.py` before pulling updates.
+The private monitor config remains outside the repository when you pull updates.
 
 ### Disable or remove
 
@@ -278,6 +297,7 @@ To remove it completely, also remove the plugin directory, the dedicated
 | `manifest.json` | Omarchy plugin metadata |
 | `Widget.qml` | Bar widget, popup and browser launcher |
 | `bridge.py` | BLE connection, FTMS decoding, runtime state and HTTP server |
+| `config.example.json` | Neutral template for the private PM5 configuration |
 | `game.html` | Shared arcade, Orbital, Velodrift and Lumen |
 | `dashboard.html` | Local workout history and charts |
 | `history.py` | SQLite session recording and queries |
@@ -285,6 +305,7 @@ To remove it completely, also remove the plugin directory, the dedicated
 | `systemd/bikeerg.service` | User service template |
 | `install.sh` | Local installation and bar placement |
 | `tests/test_bridge.py` | Packet decoding and truncated-packet checks |
+| `tests/test_history.py` | Recording, migration, counter and calendar tests |
 
 Run the checks from the repository root:
 
@@ -297,11 +318,15 @@ uv run --with playwright python tests/browser_check.py
 uv run --with playwright python tests/browser_autofire.py
 uv run --with playwright python tests/browser_menu_special.py
 uv run --with playwright python tests/browser_arcade.py
+uv run --with playwright python tests/browser_dashboard.py
+uv run --with playwright python tests/browser_review_fixes.py
 ```
 
-Real-device validation has covered power, cadence, workout time, distance,
-speed and calories. The panel and game have also been visually checked.
-Reconnection across every monitor/adapter combination has not been tested.
+Earlier real-device validation covered power, cadence, workout time, distance,
+speed and calories. The latest counter, reconnect and multi-game behavior is
+covered by synthetic tests; a complete live PM5 ride after these changes remains
+to be checked. Reconnection across every monitor/adapter combination has not
+been tested.
 
 ## References
 

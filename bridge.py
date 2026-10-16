@@ -7,16 +7,28 @@ import struct
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlsplit
 from history import History
 from bleak import BleakClient, BleakScanner
 from bleak.backends.device import BLEDevice
 
-ADDRESS = 'FE:B5:DD:E6:C6:F8'
 ROOT = Path(__file__).parent
+CONFIG_PATH = Path(os.environ.get('BIKEERG_CONFIG', Path.home() / '.config/bikeerg/config.json'))
 STATUS = Path(os.environ.get('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}')) / 'bikeerg.json'
-state = {'connected': False, 'status': 'Söker PM5', 'device': 'PM5 431575390', 'metrics': {}, 'raw': {}}
+state = {'connected': False, 'status': 'Söker PM5', 'device': 'PM5', 'metrics': {}, 'metric_times': {}, 'raw': {}, 'last_sample': 0, 'connection_seq': 0}
 lock = threading.Lock()
 history = None
+
+def load_config():
+    """The monitor identifier belongs to the user's private config, not Git."""
+    try:
+        config = json.loads(CONFIG_PATH.read_text())
+        address = config['address'].strip().upper()
+        if len(address.split(':')) != 6 or any(len(part) != 2 or any(c not in '0123456789ABCDEF' for c in part) for part in address.split(':')):
+            raise ValueError('Invalid Bluetooth address')
+        return {'address': address, 'device': str(config.get('device') or 'PM5')}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise RuntimeError(f'Create {CONFIG_PATH} with an address and optional device label') from exc
 
 def publish(**changes):
     with lock:
@@ -58,17 +70,19 @@ def notify(kind):
             elif kind == 'power': values = {'power_w': struct.unpack_from('<h',data,2)[0]}
             else: values = {}
             with lock:
+                received_at = time.time()
                 state['metrics'].update(values)
-                state['raw'][kind] = {'hex': data.hex(), 'timestamp': time.time()}
-                state['last_sample'] = time.time()
+                state['metric_times'].update({key: received_at for key in values})
+                state['raw'][kind] = {'hex': data.hex(), 'timestamp': received_at}
+                state['last_sample'] = received_at
             publish()
         except (ValueError,struct.error): pass
     return received
 
-async def ride():
+async def ride(address):
     while True:
         try:
-            publish(connected=False,status='Ansluter till PM5')
+            publish(connected=False,status='Ansluter till PM5',metrics={},metric_times={},raw={},last_sample=0)
             # Use BlueZ's existing object when available; scanning an already
             # connected PM5 may fail because it no longer advertises.
             from dbus_fast.aio import MessageBus
@@ -77,9 +91,9 @@ async def ride():
             try:
                 reply = await bus.call(Message(destination='org.bluez',path='/',interface='org.freedesktop.DBus.ObjectManager',member='GetManagedObjects'))
                 objects = reply.body[0]
-                path = next((p for p, interfaces in objects.items() if 'org.bluez.Device1' in interfaces and interfaces['org.bluez.Device1'].get('Address') and interfaces['org.bluez.Device1']['Address'].value == ADDRESS),None)
+                path = next((p for p, interfaces in objects.items() if 'org.bluez.Device1' in interfaces and interfaces['org.bluez.Device1'].get('Address') and interfaces['org.bluez.Device1']['Address'].value == address),None)
             finally: bus.disconnect()
-            device = BLEDevice(ADDRESS,'PM5',{'path':path}) if path else await BleakScanner.find_device_by_address(ADDRESS,timeout=10)
+            device = BLEDevice(address,'PM5',{'path':path}) if path else await BleakScanner.find_device_by_address(address,timeout=10)
             if not device: raise RuntimeError('PM5 hittas inte – välj Connect på monitorn')
             async with BleakClient(device,timeout=15) as client:
                 subscribed=[]
@@ -87,42 +101,50 @@ async def ride():
                     if client.services.get_characteristic(uuid):
                         await client.start_notify(uuid,notify(kind)); subscribed.append(kind)
                 if not subscribed: raise RuntimeError('Inga träningsdata tillgängliga')
-                publish(connected=True,status='Ansluten',subscriptions=subscribed)
+                publish(connected=True,status='Ansluten',subscriptions=subscribed,connection_seq=state['connection_seq']+1)
                 while client.is_connected:
                     publish()
                     await asyncio.sleep(1)
+                publish(connected=False,status='PM5 frånkopplad',metrics={},metric_times={},raw={},last_sample=0)
         except Exception as exc:
-            publish(connected=False,status=str(exc),metrics={},last_sample=0)
+            publish(connected=False,status=str(exc),metrics={},metric_times={},raw={},last_sample=0)
             await asyncio.sleep(5)
 
 async def log_workouts():
     while True:
         with lock:
-            snapshot = {**state, 'metrics': dict(state['metrics'])}
+            snapshot = {**state, 'metrics': dict(state['metrics']), 'metric_times': dict(state['metric_times'])}
         history.tick(snapshot)
         await asyncio.sleep(1)
 
-async def main():
-    await asyncio.gather(ride(), log_workouts())
+async def main(address):
+    await asyncio.gather(ride(address), log_workouts())
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.headers.get('Host') not in ('127.0.0.1:18765','localhost:18765'):
             self.send_error(403); return
-        if self.path == '/api/state':
+        url = urlsplit(self.path)
+        if url.path == '/api/state':
             with lock: body=json.dumps(state,ensure_ascii=False).encode()
             mime='application/json'
-        elif self.path == '/api/sessions':
+        elif url.path == '/api/sessions':
             body=json.dumps(history.list()).encode(); mime='application/json'
-        elif self.path.startswith('/api/sessions/'):
-            try: result=history.detail(int(self.path.rsplit('/',1)[1]))
+        elif url.path.startswith('/api/sessions/'):
+            try: result=history.detail(int(url.path.rsplit('/',1)[1]))
             except ValueError: result=None
             if result is None:
                 self.send_error(404); return
             body=json.dumps(result).encode(); mime='application/json'
-        elif self.path == '/dashboard':
+        elif url.path == '/api/overview':
+            args = parse_qs(url.query)
+            try: result = history.overview(args.get('period', ['week'])[0], args.get('anchor', [''])[0])
+            except ValueError:
+                self.send_error(400); return
+            body=json.dumps(result).encode(); mime='application/json'
+        elif url.path == '/dashboard':
             body=(ROOT/'dashboard.html').read_bytes(); mime='text/html; charset=utf-8'
-        elif self.path in ('/','/game'):
+        elif url.path in ('/','/game'):
             body=(ROOT/'game.html').read_bytes(); mime='text/html; charset=utf-8'
         else:
             self.send_error(404); return
@@ -134,7 +156,9 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
 
 if __name__ == '__main__':
+    config = load_config()
+    state['device'] = config['device']
     history = History()
     server=ThreadingHTTPServer(('127.0.0.1',18765),Handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()
-    asyncio.run(main())
+    asyncio.run(main(config['address']))

@@ -12,9 +12,12 @@ with sync_playwright() as p:
  page.get_by_role('button',name='Starta uppdrag').click()
  expect(page.locator('#overtitle')).to_have_text('Börja trampa')
  live.update(connected=True,metrics={'power_w':0})
- expect(page.locator('#overlay')).to_be_hidden()
+ page.wait_for_timeout(700)
+ expect(page.locator('#overlay')).to_be_visible()
+ assert page.evaluate('gameTime')==0
  assert page.evaluate('shots.length')==0
  live['metrics']['power_w']=1
+ expect(page.locator('#overlay')).to_be_hidden()
  page.wait_for_function('shots.length>0')
  # Ramp from minimal power to target; must not wait out the former 5s cooldown.
  page.evaluate('shots=[];shotClock=0')
@@ -37,5 +40,5 @@ with sync_playwright() as p:
  page.wait_for_function('energy<1',timeout=2000)
  assert page.evaluate('boostRemaining>9 && enemies.length>0')
  assert not errors,errors
- print('Live-data autofire checks passed: waiting, zero watts, ramp-up, stop and restart; no Space presses.')
+ print('Live-data autofire checks passed: zero-watt wait, first pedal, ramp-up, stop and restart; no Space presses.')
  b.close()

@@ -15,17 +15,21 @@ Panel {
     visible: data.connected === true && now - (data.updated || 0) < 5
     implicitWidth: visible ? button.implicitWidth : 0
     implicitHeight: button.implicitHeight
-    function duration(value) {
-        if (value === undefined) return "--:--"
+    function metricFresh(key) {
+        var stamp = data.metric_times ? data.metric_times[key] : data.last_sample
+        return data.connected === true && stamp !== undefined && now - stamp >= 0 && now - stamp < 5
+    }
+    function duration(value, key) {
+        if (value === undefined || value === null || value === 65535 || !metricFresh(key)) return "—"
         var s = Math.floor(value)
         return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0")
     }
     function val(key, suffix, digits) {
         var v = metrics[key]
-        return v === undefined || v === null || v === 65535 || v === 255 && key === "calories_per_minute" || (key === "heart_rate_bpm" && (v === 0 || v === 255)) ? "—" : Number(v).toFixed(digits || 0) + suffix
+        return !metricFresh(key) || v === undefined || v === null || v === 65535 || v === 255 && key === "calories_per_minute" || (key === "heart_rate_bpm" && (v === 0 || v === 255)) ? "—" : Number(v).toFixed(digits || 0) + suffix
     }
     readonly property var rows: [
-        ["Tid · PM5", duration(metrics.elapsed_s)],
+        ["Tid · PM5", duration(metrics.elapsed_s, "elapsed_s")],
         ["Effekt", val("power_w", " W")],
         ["Snitteffekt", val("average_power_w", " W")],
         ["Kadens", val("cadence_rpm", " rpm")],
@@ -39,7 +43,7 @@ Panel {
         ["Puls", val("heart_rate_bpm", " bpm")],
         ["Motståndsnivå", val("resistance", "")],
         ["MET", val("metabolic_equivalent", "", 1)],
-        ["Återstående tid", duration(metrics.remaining_s)]
+        ["Återstående tid", duration(metrics.remaining_s, "remaining_s")]
     ]
     FileView {
         id: status
@@ -56,7 +60,7 @@ Panel {
         parent: root
         anchors.fill: parent
         bar: root.bar
-        text: root.fresh ? "󰄶 " + root.val("power_w", " W") + " · " + root.duration(root.metrics.elapsed_s) : "󰄶 BikeErg"
+        text: root.fresh ? "󰄶 " + root.val("power_w", " W") + " · " + root.duration(root.metrics.elapsed_s, "elapsed_s") : "󰄶 BikeErg"
         dimmed: !root.fresh
         tooltipText: "BikeErg · klicka för detaljer"
         onPressed: root.toggle()
@@ -91,7 +95,7 @@ Panel {
                         Text { width: parent.width * 0.40; text: modelData[1]; horizontalAlignment: Text.AlignRight; color: root.barForeground; font.pixelSize: Style.font.bodySmall }
                     }
                 }
-                Text { width: parent.width; text: "— = skickas inte av PM5. Vid avbrott visas senaste värden tills återanslutning."; wrapMode: Text.Wrap; color: root.barForeground; opacity: 0.5; font.pixelSize: Style.font.caption }
+                Text { width: parent.width; text: "— = värdet saknas eller har slutat uppdateras från PM5."; wrapMode: Text.Wrap; color: root.barForeground; opacity: 0.5; font.pixelSize: Style.font.caption }
                 Button {
                     width: parent.width
                     text: "Öppna spel ↗"

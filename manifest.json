@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "hhammarstrand.bikeerg",
   "name": "BikeErg",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "hhammarstrand",
   "description": "Live BikeErg stats, private workout history and a three-game browser arcade",
   "kinds": [

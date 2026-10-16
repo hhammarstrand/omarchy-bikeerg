@@ -69,7 +69,7 @@ with sync_playwright() as p:
     page.get_by_role('button',name='Starta uppdrag').click()
     expect(page.locator('#overlay')).to_be_visible()
     page.get_by_role('button',name='Återuppta',exact=True).click()
-    expect(page.locator('#overtext')).to_contain_text('Väntar på färsk')
+    expect(page.locator('#overtext')).to_contain_text('Väntar på trampning')
     page.goto('http://127.0.0.1:18765/dashboard')
     expect(page.locator('#status')).not_to_have_text('Hämtar träningslogg…')
     assert 'Ingen kontakt' not in page.locator('#status').inner_text()
@@ -77,12 +77,12 @@ with sync_playwright() as p:
     # Empty history and selected-session views using synthetic data only.
     page.route('**/api/sessions',lambda r:r.fulfill(json=[]))
     page.reload(); expect(page.locator('#empty')).to_be_visible()
-    session={'id':999,'started':1700000000,'ended':1700000060,'duration_s':60,'distance_m':500,'avg_power':100,'max_power':150,'avg_cadence':60,'samples':3}
+    session={'id':999,'started':1700000000,'ended':1700000060,'duration_s':60,'distance_m':500,'avg_power':100,'max_power':150,'avg_cadence':60,'samples':3,'power_samples':3,'cadence_samples':3,'calories_kcal':None}
     page.route('**/api/sessions',lambda r:r.fulfill(json=[session]))
     page.route('**/api/sessions/999',lambda r:r.fulfill(json={**session,'points':[{'t':1700000000+i*30,'power':v,'cadence':60} for i,v in enumerate([80,150,70])]}))
     page.reload();expect(page.locator('#detail')).to_be_visible()
     expect(page.locator('#detailStats')).to_contain_text('100 W')
-    assert page.locator('#powerChart path').count() == 5
+    assert page.locator('#powerChart path').count() == 4
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
     page.goto('http://127.0.0.1:18765/game')

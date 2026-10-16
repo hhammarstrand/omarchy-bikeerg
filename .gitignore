@@ -13,3 +13,5 @@ exports/
 *.db
 *.db-*
 .env
+config.json
+*.local.json

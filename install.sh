@@ -8,6 +8,11 @@ if [[ "$source_dir" != "$plugin_dir" ]]; then
 fi
 command -v uv >/dev/null
 command -v omarchy >/dev/null
+config_path="${BIKEERG_CONFIG:-$HOME/.config/bikeerg/config.json}"
+if [[ ! -f "$config_path" ]]; then
+  echo "Create $config_path from config.example.json and set your PM5 Bluetooth address before installation." >&2
+  exit 1
+fi
 uv venv --allow-existing "$HOME/.local/share/bikeerg/venv"
 uv pip install --python "$HOME/.local/share/bikeerg/venv/bin/python" -r "$source_dir/requirements.txt"
 mkdir -p "$HOME/.config/systemd/user"

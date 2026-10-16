@@ -1,4 +1,6 @@
 import unittest
+from unittest.mock import patch
+import bridge
 from bridge import indoor
 
 
@@ -19,3 +21,15 @@ class IndoorBikeDataTests(unittest.TestCase):
     def test_truncated_field(self):
         with self.assertRaises(ValueError):
             indoor(bytes.fromhex('4000'))
+
+    def test_power_notification_does_not_refresh_cadence_timestamp(self):
+        old_state=bridge.state
+        try:
+            bridge.state={'metrics':{'cadence_rpm':50},'metric_times':{'cadence_rpm':100},'raw':{},'last_sample':0}
+            with patch.object(bridge,'publish'):
+                bridge.notify('power')(None,bytes.fromhex('00000000'))
+            self.assertEqual(bridge.state['metrics']['power_w'],0)
+            self.assertEqual(bridge.state['metric_times']['cadence_rpm'],100)
+            self.assertGreater(bridge.state['metric_times']['power_w'],100)
+        finally:
+            bridge.state=old_state
